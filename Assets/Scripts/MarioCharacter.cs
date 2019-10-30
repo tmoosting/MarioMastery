@@ -18,6 +18,8 @@ public class MarioCharacter : MonoBehaviour
     [SerializeField, Tooltip("Max height the character will jump regardless of gravity")]
     float jumpHeight = 4;
 
+    bool movementAllowed = true;
+
     private BoxCollider2D boxCollider;
 
     private Vector2 velocity;
