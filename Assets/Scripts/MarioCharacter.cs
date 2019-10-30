@@ -63,7 +63,9 @@ public class MarioCharacter : MonoBehaviour
 
         velocity.y += Physics2D.gravity.y * Time.deltaTime;
 
-        transform.Translate(velocity * Time.deltaTime);
+        // if no button pressed and grounded are both true then don't
+   //     if ( (moveInput == 0 && grounded) == false  )
+            transform.Translate(velocity * Time.deltaTime);
 
         grounded = false;
 
@@ -83,7 +85,7 @@ public class MarioCharacter : MonoBehaviour
             // pushing us out of this one.
             if (colliderDistance.isOverlapped)
             {
-                transform.Translate(colliderDistance.pointA - colliderDistance.pointB);
+               transform.Translate(colliderDistance.pointA - colliderDistance.pointB);
 
                 // If we intersect an object beneath us, set grounded to true. 
                 if (Vector2.Angle(colliderDistance.normal, Vector2.up) < 90 && velocity.y < 0)
