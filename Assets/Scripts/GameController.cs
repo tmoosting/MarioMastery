@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MarioController : MonoBehaviour
+public class GameController : MonoBehaviour
 {
-    public static MarioController Instance;
+    public static GameController Instance;
 
     void Awake()
     {
-        Instance = this;
+        Instance = this; 
     }
 
     // Update is called once per frame
