@@ -6,14 +6,26 @@ public class GameController : MonoBehaviour
 {
     public static GameController Instance;
 
+    public bool OpenWelcomeUI;
+
     void Awake()
     {
         Instance = this; 
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        OpenGame();
+    }
+
+   void OpenGame()
+    {
+        if (OpenWelcomeUI == true)
+          UIController.Instance.ShowTitleScreen();
+    }
+
+    void StartGame()
+    {
+
     }
 }
