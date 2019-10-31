@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour
     public bool skipToLevel;
     public bool allowMovement = false;
 
+    Mario mario;
     int failedJumps = 0;
     void Awake()
     {
@@ -21,8 +22,10 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
+
         OpenGame();
         TextController.Instance.HideTextPanel();
+        mario = MarioController.Instance.misterMario;
     }
 
    void OpenGame()
@@ -54,11 +57,11 @@ public class GameController : MonoBehaviour
             LevelController.Instance.LoadLevel(); 
         }  
         if (state == GameState.WalkedIn)
-        {
-           MarioController.Instance.misterMario.MarioSpinsAndJumps();
+        { 
+            StartCoroutine(PostWalkInDelay());  
         }
         if (state == GameState.ClothesDropped)
-        {
+        { 
             SoundControllerScript.PlaySound("changing his clothes");
             allowMovement = true;
         }
@@ -98,10 +101,23 @@ public class GameController : MonoBehaviour
         return currentGameState;
     }
 
-
+    IEnumerator PostWalkInDelay()
+    {
+        for (float t = 0.0f; t < 3f; t += Time.deltaTime * 2)
+            yield return null;
+        mario.SetText1();
+        StartCoroutine(PostWalkInTextDelay());
+    }
+    IEnumerator PostWalkInTextDelay()
+    {
+        for (float t = 0.0f; t < 5f; t += Time.deltaTime * 2)
+            yield return null;
+        mario.ClearText();
+        MarioController.Instance.misterMario.MarioSpinsAndJumps();
+    }
     IEnumerator PostFailDelay()
     {
-        for (float t = 0.0f; t < 2f; t += Time.deltaTime * 2)
+        for (float t = 0.0f; t < 5f; t += Time.deltaTime * 2)
             yield return null;
         while (MarioController.Instance.misterMario.gameObject.transform.localPosition.y > 2f)
             yield return null;
@@ -123,7 +139,7 @@ public class GameController : MonoBehaviour
     public void FailJump()
     {
         failedJumps++;
-        if (failedJumps == 8)
+        if (failedJumps == 9)
         {
             allowMovement = false;
             StartCoroutine(PostJumpFailDelay());

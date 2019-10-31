@@ -59,9 +59,9 @@ public class MarioController : MonoBehaviour
         Transform mt = misterMario.gameObject.transform;
         Vector2 currentPos = mt.localPosition; 
 
-        for (float t = 0.0f; t < 0.6f; t += Time.deltaTime )
+        for (float t = 0.0f; t < 2.5f; t += Time.deltaTime )
         {
-            mt.position += Vector3.right *  2.5f * Time.deltaTime;
+            mt.position += Vector3.right *  0.5f * Time.deltaTime;
             yield return null;
     
         }
@@ -75,17 +75,31 @@ public class MarioController : MonoBehaviour
       //  Debug.Log("failed pre");
         StartCoroutine(FailDelay());
         failCount++;
+        if (failCount == 1)
+            StartCoroutine(Text3OnLand());
         if (failCount > 1)
+        {
+            StartCoroutine(Text4OnLand());
             StartCoroutine(WaitToHitGround());
+        }
     }
-
-
+    IEnumerator Text3OnLand()
+    {
+        while (misterMario.GetComponent<MarioCharacter>().IsGrounded() == false)
+            yield return null;
+        misterMario.SetText3();
+    }
+    IEnumerator Text4OnLand()
+    {
+        while (misterMario.GetComponent<MarioCharacter>().IsGrounded() == false)
+            yield return null;
+        misterMario.SetText4();
+    }
     IEnumerator FailDelay()
     {
         for (float t = 0.0f; t < 2f; t += Time.deltaTime * 2)
         {
-            yield return null;        
-
+            yield return null;       
         }        
         misterMario.failTriggered = false;
        // Debug.Log("failed post");
