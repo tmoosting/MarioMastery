@@ -10,6 +10,10 @@ public class Mario : MonoBehaviour
     public enum HandsType { Hands1, Hands2, Hands3, Hands4  }
     public enum FeetType { Feet1, Feet2, Feet3, Feet4  }
 
+    public Animation anim;
+
+
+
 
     GameController.WeaponType marioWeaponType = GameController.WeaponType.Arrow;
 
@@ -21,4 +25,15 @@ public class Mario : MonoBehaviour
     public GameObject skeletonSprite;
 
 
+
+    private void Start()
+    {
+      
+    }
+
+    public void MarioSpinsAndJumps()
+    {
+        anim = GetComponent<Animation>();
+        anim.Play("Mario_Spin"); // <--- Change this to the actual name of the animation
+    }
 }

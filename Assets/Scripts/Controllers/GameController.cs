@@ -42,7 +42,7 @@ public class GameController : MonoBehaviour
         }
         if (state == GameState.DressupScreen)
         {
-            TextController.Instance.ShowTextPanel(state);
+       //     TextController.Instance.ShowTextPanel(state);
             UIController.Instance.ShowDressUpScreen();
         }
         if (state == GameState.PowerupScreen)
@@ -52,6 +52,7 @@ public class GameController : MonoBehaviour
         if (state == GameState.LevelOpen)
         {
             LevelController.Instance.LoadLevel();
+           MarioController.Instance.misterMario.MarioSpinsAndJumps();
         }  
         if (state == GameState.WalkedIn)
         {
