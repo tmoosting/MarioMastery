@@ -14,6 +14,8 @@ public class UIController : MonoBehaviour
     public GameObject dressupPanel;
     public GameObject powerupPanel;
     public GameObject marioPanel;
+    public GameObject blackPanel;
+    public GameObject endPanel;
     public TextMeshProUGUI clickToStartText;
     public TextMeshProUGUI textOrginal;
     public TextMeshProUGUI textI;
@@ -29,19 +31,22 @@ public class UIController : MonoBehaviour
     bool buttonPressedL = false;
 
 
+
+
     void Awake()
     {
         Instance = this;
         startPanel.SetActive(false);
         dressupPanel.SetActive(false);
         powerupPanel.SetActive(false);
+        blackPanel.SetActive(false);
+        endPanel.SetActive(false);
         canvas.SetActive(true); 
         standingPlatform.SetActive(true);
         marioFrame.SetActive(false);
         selectionHolder.SetActive(false);
-        proceedButton.SetActive(false);
-        marioPanel.SetActive(false);
-        proceedButton.SetActive(false);
+        proceedButton.SetActive(true);
+        marioPanel.SetActive(false); 
     }
 
     private void Update()
@@ -64,6 +69,11 @@ public class UIController : MonoBehaviour
             if (buttonPressedL == true)
                 if (Input.GetKeyDown("i"))
                     ClearTitleScreen();
+        }
+
+        if (Input.GetKeyDown("c"))
+        {
+            LoadEndScreen();
         }
     }
 
@@ -137,8 +147,7 @@ public class UIController : MonoBehaviour
     IEnumerator FadeTo(float aValue, float aTime)
     {
         for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / (aTime / 4 ))
-        {
-      
+        { 
             yield return null;
         }
 
@@ -149,8 +158,48 @@ public class UIController : MonoBehaviour
             marioFrame.GetComponent<Image>().color = newColor;
             yield return null;
         }
-        selectionHolder.SetActive(true);
-        
+        selectionHolder.SetActive(true); 
     }
 
+    public void LoadEndScreen()
+    {        
+        Color transparent = new Color(0, 0, 0, 0);
+        blackPanel.GetComponent<Image>().color = transparent;
+
+        blackPanel.SetActive(true);
+
+        StartCoroutine(FadeBlackIn(1f, 3.5f)); 
+    
+    }
+
+
+    IEnumerator FadeBlackIn(float aValue, float aTime)
+    { 
+        float alpha = blackPanel.GetComponent<Image>().color.a;
+        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / aTime)
+        {
+            Color newColor = new Color(0, 0, 0, Mathf.Lerp(alpha, aValue, t));
+            blackPanel.GetComponent<Image>().color = newColor;
+            yield return null;
+        }
+        StartCoroutine(PostFadeInDelay());
+    }
+    IEnumerator PostFadeInDelay()
+    {
+        for (float t = 0.0f; t < 1f; t += Time.deltaTime * 2)
+            yield return null;
+        endPanel.SetActive(true);
+        StartCoroutine(FadeBlackOut(0f, 6f));
+    }
+    IEnumerator FadeBlackOut(float aValue, float aTime)
+    {
+        float alpha = blackPanel.GetComponent<Image>().color.a;
+        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / aTime)
+        {
+            Color newColor = new Color(0, 0, 0, Mathf.Lerp(alpha, aValue, t));
+            blackPanel.GetComponent<Image>().color = newColor;
+            yield return null;
+        }
+        
+    }
 }

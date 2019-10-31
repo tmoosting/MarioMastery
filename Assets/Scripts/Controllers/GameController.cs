@@ -6,14 +6,14 @@ public class GameController : MonoBehaviour
 {
     public static GameController Instance;
 
-    public enum GameState { WelcomeScreen, DressupScreen, PowerupScreen, LevelOpen, WalkedIn, ClothesDropped,  JumpFailed, EndScreen}
-
-    public enum WeaponType {  Sword, Axe, Arrow}
+    public enum GameState { WelcomeScreen, DressupScreen, PowerupScreen, LevelOpen, WalkedIn, ClothesDropped,  JumpFailed, MarioFreaks, DoneFreaking, BadControls, JumpedAround, EndScreen}
+     
 
     GameState currentGameState;
     public bool skipToLevel;
     public bool allowMovement = false;
 
+    int failedJumps = 0;
     void Awake()
     {
         Instance = this; 
@@ -51,16 +51,44 @@ public class GameController : MonoBehaviour
         }
         if (state == GameState.LevelOpen)
         {
-            LevelController.Instance.LoadLevel();
-        
+            LevelController.Instance.LoadLevel(); 
         }  
         if (state == GameState.WalkedIn)
         {
-            allowMovement = true;
+           MarioController.Instance.misterMario.MarioSpinsAndJumps();
         }
         if (state == GameState.ClothesDropped)
         {
             SoundControllerScript.PlaySound("changing his clothes");
+            allowMovement = true;
+        }
+        if (state == GameState.JumpFailed)
+        { 
+            allowMovement = false;
+            StartCoroutine(PostFailDelay());
+        }
+        if (state == GameState.MarioFreaks)
+        { 
+           MarioController.Instance.misterMario.MarioFreaks(); 
+        }
+        if (state == GameState.DoneFreaking)
+        {
+            StartCoroutine(PostFreakDelay());
+
+        }
+        if (state == GameState.BadControls)
+        {
+            MarioController.Instance.FlipControls();
+            allowMovement = true;
+        } 
+        if (state == GameState.JumpedAround)
+        {            
+            allowMovement = false;
+            MarioController.Instance.misterMario.MarioWalksOff();
+        }
+        if (state == GameState.EndScreen)
+        {
+            UIController.Instance.LoadEndScreen();
         }
         currentGameState = state;
     }
@@ -68,5 +96,37 @@ public class GameController : MonoBehaviour
     public GameState GetGameState()
     {
         return currentGameState;
+    }
+
+
+    IEnumerator PostFailDelay()
+    {
+        for (float t = 0.0f; t < 2f; t += Time.deltaTime * 2)
+            yield return null;
+        while (MarioController.Instance.misterMario.gameObject.transform.localPosition.y > 2f)
+            yield return null;
+        SetGameState(GameState.MarioFreaks);
+    }
+    IEnumerator PostFreakDelay()
+    {
+        for (float t = 0.0f; t < 0.5f; t += Time.deltaTime * 2)
+            yield return null;
+        SetGameState(GameState.BadControls);
+    }
+    IEnumerator PostJumpFailDelay()
+    {
+        for (float t = 0.0f; t < 8f; t += Time.deltaTime * 2)
+            yield return null;
+        SetGameState(GameState.JumpedAround);
+    }
+
+    public void FailJump()
+    {
+        failedJumps++;
+        if (failedJumps == 8)
+        {
+            allowMovement = false;
+            StartCoroutine(PostJumpFailDelay());
+        }
     }
 }

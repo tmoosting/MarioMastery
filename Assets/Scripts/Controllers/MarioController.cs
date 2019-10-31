@@ -8,13 +8,18 @@ public class MarioController : MonoBehaviour
 
     public Mario misterMario;
 
+    int failCount = 0;
+
     void Awake()
     {
         Instance = this;
     }
 
-    
-   
+
+    public float PreSpinPauseTime = 0f;
+    public float FreakoutBaseSpeed = 2f;
+
+
     public void SetMarioDress(List<int> indexList)
     {  
         misterMario.chosenHeadType = (Mario.HeadType)indexList[0]-1;
@@ -23,6 +28,10 @@ public class MarioController : MonoBehaviour
         misterMario.chosenFeetType = (Mario.FeetType)indexList[3]-1;  
     }
    
+    public void FlipControls()
+    {
+        misterMario.gameObject.GetComponent<MarioCharacter>().controlsInverted = true;
+    }
     public bool DressupComplete()
     {
         return true;
@@ -43,21 +52,50 @@ public class MarioController : MonoBehaviour
     void MarioHasMovedIntoLevel()
     {
         LevelController.Instance.leftWall.SetActive(true);
-        GameController.Instance.SetGameState(GameController.GameState.WalkedIn);
-         misterMario.MarioSpinsAndJumps();
+        GameController.Instance.SetGameState(GameController.GameState.WalkedIn); 
     }
     IEnumerator MoveMarioRight( )
     {
         Transform mt = misterMario.gameObject.transform;
-        Vector2 currentPos = mt.localPosition;
+        Vector2 currentPos = mt.localPosition; 
 
-
-        for (float t = 0.0f; t < 0.3f; t += Time.deltaTime )
+        for (float t = 0.0f; t < 0.6f; t += Time.deltaTime )
         {
-            mt.position += Vector3.right *  5f * Time.deltaTime;
+            mt.position += Vector3.right *  2.5f * Time.deltaTime;
             yield return null;
     
         }
         MarioHasMovedIntoLevel();
+    }
+
+
+    
+    public void MarioHasFailedJump()
+    {
+      //  Debug.Log("failed pre");
+        StartCoroutine(FailDelay());
+        failCount++;
+        if (failCount > 1)
+            StartCoroutine(WaitToHitGround());
+    }
+
+
+    IEnumerator FailDelay()
+    {
+        for (float t = 0.0f; t < 2f; t += Time.deltaTime * 2)
+        {
+            yield return null;        
+
+        }        
+        misterMario.failTriggered = false;
+       // Debug.Log("failed post");
+    }
+    IEnumerator WaitToHitGround()
+    {
+        while (misterMario.gameObject.GetComponent<MarioCharacter>().IsGrounded() == false)
+            yield return null;
+
+        GameController.Instance.SetGameState(GameController.GameState.JumpFailed);
+
     }
 }
