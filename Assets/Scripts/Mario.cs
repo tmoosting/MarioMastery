@@ -209,7 +209,7 @@ public class Mario : MonoBehaviour
     // --------------------------- SPINJUMP
 
     public void MarioSpinsAndJumps()
-    {
+    { 
         StartCoroutine(StartCoroutineAfterSeconds(SpinJump(), MarioController.Instance.PreSpinPauseTime));
     }
     void MarioHasJumped()
@@ -269,5 +269,6 @@ public class Mario : MonoBehaviour
 
         }
         MarioHasSpinned();
+ 
     }
 }
