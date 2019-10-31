@@ -191,6 +191,7 @@ public class DressController : MonoBehaviour
         if (index1 == 4)
             arrowRight1.SetActive(false);
         ReloadImages();
+        UIController.Instance.proceedButton.SetActive(true);
     }
     public void ArrowRight2()
     {
@@ -200,6 +201,7 @@ public class DressController : MonoBehaviour
         if (index2 == 4)
             arrowRight2.SetActive(false);
         ReloadImages();
+        UIController.Instance.proceedButton.SetActive(true);
     }
     public void ArrowRight3()
     {
@@ -209,6 +211,7 @@ public class DressController : MonoBehaviour
         if (index3 == 4)
             arrowRight3.SetActive(false);
         ReloadImages();
+        UIController.Instance.proceedButton.SetActive(true);
     }
     public void ArrowRight4()
     {
@@ -218,6 +221,7 @@ public class DressController : MonoBehaviour
         if (index4 == 4)
             arrowRight4.SetActive(false);
         ReloadImages();
+        UIController.Instance.proceedButton.SetActive(true);
     }
    
     public List<int> GetChoiceIndexes()
