@@ -35,7 +35,8 @@ public class Mario : MonoBehaviour
 
     public void MarioSpinsAndJumps()
     {
-          anim = GetComponent<Animation>();
-        anim.Play("Mario_Hesitation"); // <--- Change this to the actual name of the animation
+        anim = GetComponent<Animation>();
+        //anim["MarioHesitate"].wrapMode = WrapMode.Once;
+        anim.Play("MarioHesitate");
     }
 }
