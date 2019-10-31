@@ -128,21 +128,21 @@ public class DressController : MonoBehaviour
         imageFrame3.GetComponent<Image>().sprite = dressFrame3[index3];
         imageFrame4.GetComponent<Image>().sprite = dressFrame4[index4];
 
-        if (index1 > 1)
+        if (index1 > 0)
             imageFrame1.gameObject.SetActive(true);
-        if (index2 > 1)
+        if (index2 > 0)
             imageFrame2.gameObject.SetActive(true);
-        if (index3 > 1)
+        if (index3 > 0)
             imageFrame3.gameObject.SetActive(true);
-        if (index4 > 1)
+        if (index4 > 0)
             imageFrame4.gameObject.SetActive(true);
-        if (index1 <= 1)
+        if (index1 <= 0)
             imageFrame1.gameObject.SetActive(false);
-        if (index2 <= 1)
+        if (index2 <= 0)
             imageFrame2.gameObject.SetActive(false);
-        if (index3 <= 1)
+        if (index3 <= 0)
             imageFrame3.gameObject.SetActive(false);
-        if (index4 <= 1)
+        if (index4 <= 0)
             imageFrame4.gameObject.SetActive(false);
 
     }
@@ -150,76 +150,92 @@ public class DressController : MonoBehaviour
     public void ArrowLeft1()
     {
         index1--;
-        if (index1 == 1)
-            arrowLeft1.SetActive(false);
-        if (index1 == 3)
-            arrowRight1.SetActive(true);
+        if (index1 < 1)
+            index1 = 1;
+        //if (index1 == 1)
+        //    arrowLeft1.SetActive(false);
+        //if (index1 == 3)
+        //    arrowRight1.SetActive(true);
         ReloadImages();
     }
     public void ArrowLeft2()
     {
         index2--;
-        if (index2 == 1)
-            arrowLeft2.SetActive(false);
-        if (index2 == 3)
-            arrowRight2.SetActive(true);
+        if (index2 < 1)
+            index2 = 1;
+        //if (index2 == 1)
+        //    arrowLeft2.SetActive(false);
+        //if (index2 == 3)
+        //    arrowRight2.SetActive(true);
         ReloadImages();
     }
     public void ArrowLeft3()
     {
         index3--;
-        if (index3 == 1)
-            arrowLeft3.SetActive(false);
-        if (index3 == 3)
-            arrowRight3.SetActive(true);
+        if (index3 < 1)
+            index3 = 1;
+        //if (index3 == 1)
+        //    arrowLeft3.SetActive(false);
+        //if (index3 == 3)
+        //    arrowRight3.SetActive(true);
         ReloadImages();
     }
     public void ArrowLeft4()
     {
         index4--;
-        if (index4 == 1)
-            arrowLeft4.SetActive(false);
-        if (index4 == 3)
-            arrowRight4.SetActive(true);
+        if (index4 < 1)
+            index4 = 1;
+        //if (index4 == 1)
+        //    arrowLeft4.SetActive(false);
+        //if (index4 == 3)
+        //    arrowRight4.SetActive(true);
         ReloadImages();
     }
     public void ArrowRight1()
     {
         index1++;
-        if (index1 == 2)
-            arrowLeft1.SetActive(true);
-        if (index1 == 4)
-            arrowRight1.SetActive(false);
+        if (index1 > 4)
+            index1 = 4;
+        //if (index1 == 2)
+        //    arrowLeft1.SetActive(true);
+        //if (index1 == 4)
+        //    arrowRight1.SetActive(false);
         ReloadImages();
         UIController.Instance.proceedButton.SetActive(true);
     }
     public void ArrowRight2()
     {
         index2++;
-        if (index2 == 2)
-            arrowLeft2.SetActive(true);
-        if (index2 == 4)
-            arrowRight2.SetActive(false);
+        if (index2 > 4)
+            index2 = 4;
+        //if (index2 == 2)
+        //    arrowLeft2.SetActive(true);
+        //if (index2 == 4)
+        //    arrowRight2.SetActive(false);
         ReloadImages();
         UIController.Instance.proceedButton.SetActive(true);
     }
     public void ArrowRight3()
     {
         index3++;
-        if (index3 == 2)
-            arrowLeft3.SetActive(true);
-        if (index3 == 4)
-            arrowRight3.SetActive(false);
+        if (index3 > 4)
+            index3 = 4;
+        //if (index3 == 2)
+        //    arrowLeft3.SetActive(true);
+        //if (index3 == 4)
+        //    arrowRight3.SetActive(false);
         ReloadImages();
         UIController.Instance.proceedButton.SetActive(true);
     }
     public void ArrowRight4()
     {
         index4++;
-        if (index4 == 2)
-            arrowLeft4.SetActive(true);
-        if (index4 == 4)
-            arrowRight4.SetActive(false);
+        if (index4 > 4)
+            index4 = 4;
+        //if (index4 == 2)
+        //    arrowLeft4.SetActive(true);
+        //if (index4 == 4)
+        //    arrowRight4.SetActive(false);
         ReloadImages();
         UIController.Instance.proceedButton.SetActive(true);
     }
