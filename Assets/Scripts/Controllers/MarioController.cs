@@ -52,9 +52,9 @@ public class MarioController : MonoBehaviour
         Vector2 currentPos = mt.localPosition;
 
 
-        for (float t = 0.0f; t < 1.5f; t += Time.deltaTime )
+        for (float t = 0.0f; t < 0.3f; t += Time.deltaTime )
         {
-            mt.position += Vector3.right * 1f * Time.deltaTime;
+            mt.position += Vector3.right *  5f * Time.deltaTime;
             yield return null;
     
         }

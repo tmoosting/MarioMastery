@@ -40,9 +40,20 @@ public class MarioCharacter : MonoBehaviour
             float moveInput = Input.GetAxisRaw("Horizontal");
 
             if (moveInput < 0)
+            {
                 gameObject.GetComponent<Mario>().skeletonSprite.GetComponent<SpriteRenderer>().flipX = true;
+                gameObject.GetComponent<Mario>().headSprite.flipX = true;
+                gameObject.GetComponent<Mario>().bodySprite.flipX = true;
+                gameObject.GetComponent<Mario>().feetSprite.flipX = true;
+
+            }
             else
+            {
                 gameObject.GetComponent<Mario>().skeletonSprite.GetComponent<SpriteRenderer>().flipX = false;
+                gameObject.GetComponent<Mario>().headSprite.flipX = false;
+                gameObject.GetComponent<Mario>().bodySprite.flipX = false;
+                gameObject.GetComponent<Mario>().feetSprite.flipX = false;
+            }
 
             if (grounded)
             {
@@ -71,7 +82,7 @@ public class MarioCharacter : MonoBehaviour
             velocity.y += Physics2D.gravity.y * Time.deltaTime;
 
             // if no button pressed and grounded are both true then don't
-            if ((moveInput == 0 && grounded) == false)
+        //    if ((moveInput == 0 && grounded) == false)
                 transform.Translate(velocity * Time.deltaTime);
 
             grounded = false;
