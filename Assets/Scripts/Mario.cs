@@ -12,7 +12,9 @@ public class Mario : MonoBehaviour
 
     public Animation anim;
 
-
+    public SpriteRenderer headSprite;
+    public SpriteRenderer bodySprite;
+    public SpriteRenderer feetSprite;
 
 
     GameController.WeaponType marioWeaponType = GameController.WeaponType.Arrow;
