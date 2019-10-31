@@ -53,7 +53,7 @@ public class MarioController : MonoBehaviour
     
         }
         LevelController.Instance.leftWall.SetActive(true);
-
+        GameController.Instance.SetGameState(GameController.GameState.WalkedIn);
 
     }
 }
