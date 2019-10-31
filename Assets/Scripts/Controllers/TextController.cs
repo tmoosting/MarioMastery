@@ -30,7 +30,7 @@ public class TextController : MonoBehaviour
     public void ShowTextPanel(GameController.GameState state)
     {
         textPanel.SetActive(true);
-        if (state == GameController.GameState.DressupScreen)
+        if (state == GameController.GameState.OutfitScreen)
             actualText.text = textIntro;
     }
 
