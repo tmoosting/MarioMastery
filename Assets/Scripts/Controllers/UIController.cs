@@ -85,7 +85,7 @@ public class UIController : MonoBehaviour
     public void ClearTitleScreen()
     {
         startPanel.SetActive(false);
-        GameController.Instance.SetGameState(GameController.GameState.OutfitScreen);
+        GameController.Instance.SetGameState(GameController.GameState.DressupScreen);
     }
 
     // DRESSUP SCREEN
