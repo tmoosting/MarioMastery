@@ -38,8 +38,14 @@ public class MarioController : MonoBehaviour
         // TODO: mario moves in from the side of the screen.  
        StartCoroutine(MoveMarioRight());
 
-    }
 
+    }
+    void MarioHasMovedIntoLevel()
+    {
+        LevelController.Instance.leftWall.SetActive(true);
+        GameController.Instance.SetGameState(GameController.GameState.WalkedIn);
+       misterMario.MarioSpinsAndJumps();
+    }
     IEnumerator MoveMarioRight( )
     {
         Transform mt = misterMario.gameObject.transform;
@@ -52,8 +58,6 @@ public class MarioController : MonoBehaviour
             yield return null;
     
         }
-        LevelController.Instance.leftWall.SetActive(true);
-        GameController.Instance.SetGameState(GameController.GameState.WalkedIn);
-
+        MarioHasMovedIntoLevel();
     }
 }

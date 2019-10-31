@@ -193,6 +193,7 @@ public class DressController : MonoBehaviour
     }
     public void ArrowRight1()
     {
+        Debug.Log("Ffd");
         index1++;
         if (index1 > 4)
             index1 = 4;

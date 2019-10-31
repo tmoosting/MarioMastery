@@ -52,7 +52,7 @@ public class GameController : MonoBehaviour
         if (state == GameState.LevelOpen)
         {
             LevelController.Instance.LoadLevel();
-           MarioController.Instance.misterMario.MarioSpinsAndJumps();
+        
         }  
         if (state == GameState.WalkedIn)
         {
