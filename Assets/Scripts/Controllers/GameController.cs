@@ -22,6 +22,7 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         OpenGame();
+        TextController.Instance.HideTextPanel();
     }
 
    void OpenGame()
@@ -40,6 +41,7 @@ public class GameController : MonoBehaviour
         }
         if (state == GameState.DressupScreen)
         {
+            TextController.Instance.ShowTextPanel(state);
             UIController.Instance.ShowDressUpScreen();
         }
         if (state == GameState.PowerupScreen)

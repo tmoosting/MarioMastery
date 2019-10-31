@@ -11,7 +11,14 @@ public class TextController : MonoBehaviour
 
     public GameObject textPanel;
     public TextMeshProUGUI actualText;
-     
+
+
+    public string textIntro = "Choose an outfit for Mario";
+
+
+
+
+
     void Awake()
     {
         Instance = this; 
@@ -20,13 +27,16 @@ public class TextController : MonoBehaviour
 
 
 
-    public void ShowTextPanel()
+    public void ShowTextPanel(GameController.GameState state)
     {
-
+        textPanel.SetActive(true);
+        if (state == GameController.GameState.DressupScreen)
+            actualText.text = textIntro;
     }
 
     public void HideTextPanel()
     {
+        textPanel.SetActive(false);
 
     }
 
