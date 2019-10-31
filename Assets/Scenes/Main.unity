@@ -585,6 +585,7 @@ GameObject:
   m_Component:
   - component: {fileID: 79633037}
   - component: {fileID: 79633038}
+  - component: {fileID: 79633039}
   m_Layer: 0
   m_Name: SkeletonSprite
   m_TagString: Untagged
@@ -655,6 +656,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &79633039
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 79633036}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5060977a880cdbc4cb1beec990410906, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &211185425
 GameObject:
   m_ObjectHideFlags: 0
@@ -2852,7 +2872,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c6452fb05de30d42ab89232bb82c0ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skipToLevel: 0
+  skipToLevel: 1
 --- !u!1 &951888860
 GameObject:
   m_ObjectHideFlags: 0
