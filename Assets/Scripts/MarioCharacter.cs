@@ -3,7 +3,6 @@
 [RequireComponent(typeof(BoxCollider2D))]
 public class MarioCharacter : MonoBehaviour
 {
-
     [SerializeField, Tooltip("Max speed, in units per second, that the character moves.")]
     float speed = 9;
 
