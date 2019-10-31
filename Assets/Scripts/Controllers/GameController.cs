@@ -57,7 +57,10 @@ public class GameController : MonoBehaviour
         {
             allowMovement = true;
         }
-
+        if (state == GameState.ClothesDropped)
+        {
+            SoundControllerScript.PlaySound("changing his clothes");
+        }
         currentGameState = state;
     }
 
