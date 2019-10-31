@@ -6,7 +6,7 @@ public class GameController : MonoBehaviour
 {
     public static GameController Instance;
 
-    public enum GameState { WelcomeScreen, DressupScreen, PowerupScreen, LevelOpen, WalkedIn, ClothesDropped,  JumpFailed, EndScreen}
+    public enum GameState { WelcomeScreen, OutfitScreen, PowerupScreen, LevelOpen, WalkedIn, ClothesDropped,  JumpFailed, EndScreen}
 
     public enum WeaponType {  Sword, Axe, Arrow}
 
@@ -40,7 +40,7 @@ public class GameController : MonoBehaviour
             SoundControllerScript.PlaySound("background sound");
             UIController.Instance.ShowTitleScreen();
         }
-        if (state == GameState.DressupScreen)
+        if (state == GameState.OutfitScreen)
         {
             TextController.Instance.ShowTextPanel(state);
             UIController.Instance.ShowDressUpScreen();
