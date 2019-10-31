@@ -50,6 +50,7 @@ public class MarioCharacter : MonoBehaviour
 
                 if (Input.GetButtonDown("Jump"))
                 {
+                    SoundControllerScript.PlaySound("jump");
                     // Calculate the velocity required to achieve the target jump height.
                     velocity.y = Mathf.Sqrt(2 * jumpHeight * Mathf.Abs(Physics2D.gravity.y));
                 }
