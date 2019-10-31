@@ -28,6 +28,8 @@ public class MarioCharacter : MonoBehaviour
     /// </summary>
     private bool grounded;
 
+    public bool controlsInverted = false;
+
     private void Awake()
     {
         boxCollider = GetComponent<BoxCollider2D>();
@@ -37,12 +39,27 @@ public class MarioCharacter : MonoBehaviour
     {
         if (GameController.Instance.allowMovement == true)
         {
-            float moveInput = Input.GetAxisRaw("Horizontal");
+            float moveInput;
+            if (controlsInverted == false)
+                 moveInput = Input.GetAxisRaw("Horizontal");
+            else
+                moveInput = -Input.GetAxisRaw("Horizontal");
 
             if (moveInput < 0)
+            {
                 gameObject.GetComponent<Mario>().skeletonSprite.GetComponent<SpriteRenderer>().flipX = true;
+                gameObject.GetComponent<Mario>().headSprite.flipX = true;
+                gameObject.GetComponent<Mario>().bodySprite.flipX = true;
+                gameObject.GetComponent<Mario>().feetSprite.flipX = true;
+
+            }
             else
+            {
                 gameObject.GetComponent<Mario>().skeletonSprite.GetComponent<SpriteRenderer>().flipX = false;
+                gameObject.GetComponent<Mario>().headSprite.flipX = false;
+                gameObject.GetComponent<Mario>().bodySprite.flipX = false;
+                gameObject.GetComponent<Mario>().feetSprite.flipX = false;
+            }
 
             if (grounded)
             {
@@ -52,6 +69,11 @@ public class MarioCharacter : MonoBehaviour
                 {
                     SoundControllerScript.PlaySound("jump");
                     // Calculate the velocity required to achieve the target jump height.
+                    if (controlsInverted == true)
+                    {
+                        jumpHeight *= 0.85f;
+                        GameController.Instance.FailJump();
+                    }
                     velocity.y = Mathf.Sqrt(2 * jumpHeight * Mathf.Abs(Physics2D.gravity.y));
                 }
             }
@@ -60,12 +82,12 @@ public class MarioCharacter : MonoBehaviour
             float deceleration = grounded ? groundDeceleration : 0;
 
             if (moveInput != 0)
-            {
-                velocity.x = Mathf.MoveTowards(velocity.x, speed * moveInput, acceleration * Time.deltaTime);
+            { 
+                velocity.x = Mathf.MoveTowards(velocity.x, speed * moveInput, acceleration * Time.deltaTime); 
             }
             else
-            {
-                velocity.x = Mathf.MoveTowards(velocity.x, 0, deceleration * Time.deltaTime);
+            { 
+                    velocity.x = Mathf.MoveTowards(velocity.x, 0, deceleration * Time.deltaTime); 
             }
 
             velocity.y += Physics2D.gravity.y * Time.deltaTime;
@@ -74,6 +96,7 @@ public class MarioCharacter : MonoBehaviour
             if ((moveInput == 0 && grounded) == false)
                 transform.Translate(velocity * Time.deltaTime);
 
+            
             grounded = false;
 
             // Retrieve all colliders we have intersected after velocity has been applied.
@@ -104,5 +127,9 @@ public class MarioCharacter : MonoBehaviour
         }
        
       
+    }
+    public bool IsGrounded()
+    {
+        return grounded;
     }
 }

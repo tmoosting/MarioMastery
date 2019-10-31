@@ -132,16 +132,16 @@ public class DressController : MonoBehaviour
             imageFrame1.gameObject.SetActive(true);
         if (index2 > 0)
             imageFrame2.gameObject.SetActive(true);
-        if (index3 > 0)
-            imageFrame3.gameObject.SetActive(true);
+        //if (index3 > 0)
+        //    imageFrame3.gameObject.SetActive(true);
         if (index4 > 0)
             imageFrame4.gameObject.SetActive(true);
         if (index1 <= 0)
             imageFrame1.gameObject.SetActive(false);
         if (index2 <= 0)
             imageFrame2.gameObject.SetActive(false);
-        if (index3 <= 0)
-            imageFrame3.gameObject.SetActive(false);
+        //if (index3 <= 0)
+        //    imageFrame3.gameObject.SetActive(false);
         if (index4 <= 0)
             imageFrame4.gameObject.SetActive(false);
 
@@ -192,7 +192,7 @@ public class DressController : MonoBehaviour
         ReloadImages();
     }
     public void ArrowRight1()
-    {
+    { 
         index1++;
         if (index1 > 4)
             index1 = 4;
