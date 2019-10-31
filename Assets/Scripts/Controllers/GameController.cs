@@ -37,7 +37,8 @@ public class GameController : MonoBehaviour
     {
         if (state == GameState.WelcomeScreen)
         {
-            UIController.Instance.ShowTitleScreen(); 
+            SoundControllerScript.PlaySound("background sound");
+            UIController.Instance.ShowTitleScreen();
         }
         if (state == GameState.DressupScreen)
         {

@@ -33,6 +33,7 @@ public class LevelController : MonoBehaviour
 
     public void MarioEntersLevel()
     {
+      
         MarioController.Instance.MoveMarioIntoLevel();
     }
 }
