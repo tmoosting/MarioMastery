@@ -11,10 +11,14 @@ public class Mario : MonoBehaviour
     public enum FeetType { Feet1, Feet2, Feet3, Feet4  }
 
 
+    GameController.WeaponType marioWeaponType = GameController.WeaponType.Arrow;
+
     public HeadType chosenHeadType;
     public BodyType chosenBodyType;
     public HandsType chosenHandsType;
     public FeetType chosenFeetType;
+
+    public GameObject skeletonSprite;
 
 
 }

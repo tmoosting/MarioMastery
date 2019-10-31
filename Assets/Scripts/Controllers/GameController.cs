@@ -6,10 +6,13 @@ public class GameController : MonoBehaviour
 {
     public static GameController Instance;
 
-    public enum GameState { WelcomeScreen, DressupScreen, PowerupScreen, LevelOpen, JumpFailed, EndScreen}
+    public enum GameState { WelcomeScreen, DressupScreen, PowerupScreen, LevelOpen, WalkedIn, ClothesDropped,  JumpFailed, EndScreen}
+
+    public enum WeaponType {  Sword, Axe, Arrow}
 
     GameState currentGameState;
     public bool skipToLevel;
+    public bool allowMovement = false;
 
     void Awake()
     {
@@ -19,6 +22,7 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         OpenGame();
+        TextController.Instance.HideTextPanel();
     }
 
    void OpenGame()
@@ -37,6 +41,7 @@ public class GameController : MonoBehaviour
         }
         if (state == GameState.DressupScreen)
         {
+            TextController.Instance.ShowTextPanel(state);
             UIController.Instance.ShowDressUpScreen();
         }
         if (state == GameState.PowerupScreen)
@@ -46,6 +51,10 @@ public class GameController : MonoBehaviour
         if (state == GameState.LevelOpen)
         {
             LevelController.Instance.LoadLevel();
+        }  
+        if (state == GameState.WalkedIn)
+        {
+            allowMovement = true;
         }
 
         currentGameState = state;
