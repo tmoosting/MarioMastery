@@ -37,6 +37,13 @@ public class MarioCharacter : MonoBehaviour
     {
         // Use GetAxisRaw to ensure our input is either 0, 1 or -1.
         float moveInput = Input.GetAxisRaw("Horizontal");
+        if (moveInput < 0)        
+            gameObject.GetComponent<Mario>().skeletonSprite.GetComponent<SpriteRenderer>().flipX = true;
+        else 
+            gameObject.GetComponent<Mario>().skeletonSprite.GetComponent<SpriteRenderer>().flipX = false;
+
+
+
 
         if (grounded)
         {

@@ -131,7 +131,7 @@ public class UIController : MonoBehaviour
     void MaterializeDressUpScreen()
     {
         marioFrame.SetActive(true);
-        StartCoroutine(FadeTo(1.0f, 1.5f));
+        StartCoroutine(FadeTo(1.0f, 0.1f));
        
     }
     IEnumerator FadeTo(float aValue, float aTime)

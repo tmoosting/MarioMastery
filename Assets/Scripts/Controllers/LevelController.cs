@@ -7,6 +7,7 @@ public class LevelController : MonoBehaviour
     public static LevelController Instance;
 
     public GameObject levelHolder;
+    public GameObject leftWall;
 
     void Awake()
     {
@@ -25,5 +26,13 @@ public class LevelController : MonoBehaviour
         //Debug.Log(" hand : " + MarioController.Instance.misterMario.chosenHandsType);
         //Debug.Log(" feet: " + MarioController.Instance.misterMario.chosenFeetType);
 
+        MarioEntersLevel();
+
+    }
+
+
+    public void MarioEntersLevel()
+    {
+        MarioController.Instance.MoveMarioIntoLevel();
     }
 }
