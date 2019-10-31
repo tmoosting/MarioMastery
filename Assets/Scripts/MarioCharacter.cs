@@ -64,7 +64,7 @@ public class MarioCharacter : MonoBehaviour
         velocity.y += Physics2D.gravity.y * Time.deltaTime;
 
         // if no button pressed and grounded are both true then don't
-   //     if ( (moveInput == 0 && grounded) == false  )
+       if ( (moveInput == 0 && grounded) == false  )
             transform.Translate(velocity * Time.deltaTime);
 
         grounded = false;
