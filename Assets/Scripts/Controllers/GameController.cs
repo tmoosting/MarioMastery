@@ -6,10 +6,13 @@ public class GameController : MonoBehaviour
 {
     public static GameController Instance;
 
-    public enum GameState { WelcomeScreen, DressupScreen, PowerupScreen, LevelOpen, JumpFailed, EndScreen}
+    public enum GameState { WelcomeScreen, DressupScreen, PowerupScreen, LevelOpen, WalkedIn, ClothesDropped,  JumpFailed, EndScreen}
+
+    public enum WeaponType {  Sword, Axe, Arrow}
 
     GameState currentGameState;
     public bool skipToLevel;
+    public bool allowMovement = false;
 
     void Awake()
     {
@@ -46,6 +49,10 @@ public class GameController : MonoBehaviour
         if (state == GameState.LevelOpen)
         {
             LevelController.Instance.LoadLevel();
+        }  
+        if (state == GameState.WalkedIn)
+        {
+            allowMovement = true;
         }
 
         currentGameState = state;
