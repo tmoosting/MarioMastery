@@ -10,13 +10,16 @@ public class GameController : MonoBehaviour
      
 
     GameState currentGameState;
-    public bool skipToLevel;
+    
     [HideInInspector]
     public bool allowMovement = false;
-    public bool useAISequence;
+     
 
     Mario mario;
     MarioAI marioAI;
+
+    public bool textFreeMode;
+
     void Awake()
     {
         Instance = this; 
@@ -31,11 +34,8 @@ public class GameController : MonoBehaviour
     }
 
    void OpenGame()
-    {
-        if (skipToLevel == true)
-            SetGameState(GameState.LevelOpen);
-        else
-            SetGameState(GameState.WelcomeScreen); 
+    { 
+            SetGameState(GameState.DressupScreen); 
     } 
 
 
@@ -60,12 +60,10 @@ public class GameController : MonoBehaviour
             MarioController.Instance.LoadMario();
             UIController.Instance.LoadLevel();
             DressController.Instance.LoadDressToCharacter();
-            StartCoroutine(MoveMarioRight(0.6f, 2f));
-
-        }
-      
-
-
+            
+            // Calls sequence start on finish:
+            StartCoroutine(MoveMarioRight(5f, 1.7f, 0.7f)); 
+        } 
         //if (state == GameState.WalkedIn)
         //{
         //    StartCoroutine(PostWalkInDelay());
@@ -93,9 +91,7 @@ public class GameController : MonoBehaviour
         //{
        //  MarioController.Instance.FlipControls();
         //    allowMovement = true;
-        //}
-
-         
+        //} 
         if (state == GameState.EndScreen)
         {
             UIController.Instance.LoadEndScreen();
@@ -103,8 +99,12 @@ public class GameController : MonoBehaviour
         currentGameState = state;
     }
 
-    IEnumerator MoveMarioRight(float distance, float speed)
+    IEnumerator MoveMarioRight(float delay, float distance, float speed)
     {
+        for (float t = 0.0f; t < delay; t += Time.deltaTime)
+        { 
+            yield return null;
+        }
         for (float t = 0.0f; t < distance; t += Time.deltaTime)
         {
             mario.gameObject.transform.position += Vector3.right * speed * Time.deltaTime;

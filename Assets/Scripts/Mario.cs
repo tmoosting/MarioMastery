@@ -6,6 +6,7 @@ using TMPro;
 public class Mario : MonoBehaviour
 {
 
+    public enum PowerupType { Power1, Power2, Power3  }
     public enum HeadType { Head1, Head2, Head3, Head4  }
     public enum BodyType { Body1, Body2, Body3, Body4  }
     public enum HandsType { Hands1, Hands2, Hands3, Hands4  }
@@ -14,10 +15,12 @@ public class Mario : MonoBehaviour
     public SpriteRenderer headSprite;
     public SpriteRenderer bodySprite;
     public SpriteRenderer feetSprite;
+    public SpriteRenderer powerupSprite;
     public GameObject textHolder;
     public TextMeshProUGUI customText;
-     
 
+
+    public PowerupType chosenPowerupType;
     public HeadType chosenHeadType;
     public BodyType chosenBodyType;
     public HandsType chosenHandsType;
@@ -69,10 +72,10 @@ public class Mario : MonoBehaviour
     }
     private void Update()
     {
-        if (gameObject.transform.localPosition.x > 0.9f && gameObject.transform.localPosition.x < 2f && gameObject.transform.localPosition.y > 1.9f)
+        if (gameObject.transform.localPosition.x > 0.92f && gameObject.transform.localPosition.x < 2f && gameObject.transform.localPosition.y > 1.92f)
             if (onPlatform == false)
                 EnterPlatform();
-        if (gameObject.transform.localPosition.x < 0.9f || gameObject.transform.localPosition.x > 2f || gameObject.transform.localPosition.y < 1.9f)
+        if (gameObject.transform.localPosition.x < 0.92f || gameObject.transform.localPosition.x > 2f || gameObject.transform.localPosition.y < 1.92f)
             if (onPlatform == true)
                 ExitPlatform();
 
@@ -144,7 +147,12 @@ public class Mario : MonoBehaviour
     //    MarioHasWalkedOff();
     //}
 
-    // --------------------------- FREAKOUT
+    // --------------------------- FREAKOUTS
+
+    public void MarioFreaksSmall()
+    {
+        StartCoroutine(SmallLeft());
+    }
 
     public void MarioFreaks()
     { 
@@ -154,7 +162,47 @@ public class Mario : MonoBehaviour
     {
         GameController.Instance.SetGameState(GameController.GameState.DoneFreaking);
     }
-
+    IEnumerator SmallLeft()
+    {
+        float runDistance = 0.1f;
+        float runSpeed = MarioController.Instance.FreakoutBaseSpeed * 2.4f;
+        Mario mario = MarioController.Instance.mario;
+        Transform marioTransform = mario.gameObject.transform; 
+        for (float t = 0.0f; t < runDistance; t += Time.deltaTime)
+        {
+            mario.skeletonSprite.GetComponent<SpriteRenderer>().flipX = true;
+            marioTransform.position += Vector3.left * runSpeed * Time.deltaTime;
+            yield return null;
+        }
+        StartCoroutine(SmallRight());
+    }
+    IEnumerator SmallRight()
+    {
+        float runDistance = 0.12f;
+        float runSpeed = MarioController.Instance.FreakoutBaseSpeed * 2.2f;
+        Mario mario = MarioController.Instance.mario;
+        Transform marioTransform = mario.gameObject.transform;
+        for (float t = 0.0f; t < runDistance; t += Time.deltaTime)
+        {
+            mario.skeletonSprite.GetComponent<SpriteRenderer>().flipX = false;
+            marioTransform.position += Vector3.right * runSpeed * Time.deltaTime;
+            yield return null;
+        } 
+        StartCoroutine(SmallLeftAgain());
+    }
+    IEnumerator SmallLeftAgain()
+    {
+        float runDistance = 0.07f;
+        float runSpeed = MarioController.Instance.FreakoutBaseSpeed * 2f;
+        Mario mario = MarioController.Instance.mario;
+        Transform marioTransform = mario.gameObject.transform;
+        for (float t = 0.0f; t < runDistance; t += Time.deltaTime)
+        {
+            mario.skeletonSprite.GetComponent<SpriteRenderer>().flipX = true;
+            marioTransform.position += Vector3.left * runSpeed * Time.deltaTime;
+            yield return null;
+        }
+    }
     // TODO: Combine all below into one adjustable coroutine
     IEnumerator VeryFirstLeft()
     {

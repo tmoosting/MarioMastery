@@ -30,6 +30,7 @@ public class UIController : MonoBehaviour
     bool buttonPressedI = false;
     bool buttonPressedL = false;
 
+    public Button powerupProceedButton;
     public GameObject levelHolder;
     public GameObject leftWall;
     public GameObject rightWall;
@@ -124,15 +125,15 @@ public class UIController : MonoBehaviour
     {
         dressupPanel.SetActive(false);
         MarioController.Instance.SetMarioDress(DressController.Instance.GetChoiceIndexes());
-        GameController.Instance.SetGameState(GameController.GameState.LevelOpen);
-        marioPanel.SetActive(false);
-
+        GameController.Instance.SetGameState(GameController.GameState.PowerupScreen);
+       
     }
 
     // POWERUP SCREEN
     public void ShowPowerUpScreen()
     {
-        powerupPanel.SetActive(true); 
+        powerupPanel.SetActive(true);
+        DressController.Instance.ReloadPowerupImages();
     }
     public void ClickPowerupButton()
     {
@@ -141,11 +142,19 @@ public class UIController : MonoBehaviour
     }
     public void ClearPowerUpScreen()
     {
-        powerupPanel.SetActive(false);
-        GameController.Instance.SetGameState(GameController.GameState.PowerupScreen); 
+        StartFadeToLevel();
     }
 
-
+    void StartFadeToLevel()
+    {
+        powerupProceedButton.gameObject.SetActive(false);
+        StartCoroutine(FadeBlackInBeforeLevel(1f, 3.5f));
+        blackPanel.SetActive(true); 
+    }
+    void EndFadeToLevel()
+    { 
+    
+    }
 
     void MaterializeDressUpScreen()
     {
@@ -180,8 +189,35 @@ public class UIController : MonoBehaviour
         StartCoroutine(FadeBlackIn(1f, 3.5f)); 
     
     }
+    IEnumerator FadeBlackInBeforeLevel(float aValue, float aTime)
+    {
+        float alpha = blackPanel.GetComponent<Image>().color.a;
+        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / (aTime /4))
+        {
+            Color newColor = new Color(0, 0, 0, Mathf.Lerp(alpha, aValue, t));
+            blackPanel.GetComponent<Image>().color = newColor;
+            yield return null;
+        }
+        powerupPanel.SetActive(false);
+        marioPanel.SetActive(false);
+        GameController.Instance.SetGameState(GameController.GameState.LevelOpen);
 
 
+
+        StartCoroutine(FadeBlackOutBeforeLevel(0f, aTime));
+    }
+    IEnumerator FadeBlackOutBeforeLevel(float aValue, float aTime)
+    {
+        float alpha = blackPanel.GetComponent<Image>().color.a;
+        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / aTime)
+        {
+            Color newColor = new Color(0, 0, 0, Mathf.Lerp(alpha, aValue, t));
+            blackPanel.GetComponent<Image>().color = newColor;
+            yield return null;
+        }
+
+        EndFadeToLevel();
+    }
     IEnumerator FadeBlackIn(float aValue, float aTime)
     { 
         float alpha = blackPanel.GetComponent<Image>().color.a;

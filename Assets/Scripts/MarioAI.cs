@@ -6,7 +6,7 @@ public class MarioAI : MonoBehaviour
 {
 
     public enum Trigger { EnterPlatform, ExitPlatform, FailJumpMidAir, FallJumpLand, JumpEverShorter, WalkOffscreen }
-    public enum MarioAction { None,  WalkBackOffPlatform,FreakOut, InvertControls, LimitJumps, WalkIntoSunshine } 
+    public enum MarioAction { None,LittleHop, LittleFreakout,  WalkBackOffPlatform,FreakOut, InvertControls, LimitJumps, WalkIntoSunshine } 
 
     Mario mario;
 
@@ -34,6 +34,8 @@ public class MarioAI : MonoBehaviour
     void Start()
     {
         mario = MarioController.Instance.mario; 
+        marioActionMapping.Add(MarioAction.LittleHop, MarioLittleHop);
+        marioActionMapping.Add(MarioAction.LittleFreakout, MarioSmallFreakOut);
         marioActionMapping.Add(MarioAction.WalkBackOffPlatform, MarioWalkBackOffPlatform);
         marioActionMapping.Add(MarioAction.FreakOut, MarioFreakOut);
         marioActionMapping.Add(MarioAction.InvertControls, MarioInverted);
@@ -73,115 +75,139 @@ public class MarioAI : MonoBehaviour
     }
     IEnumerator Sequence()
     { 
-        if (sequenceCount == 0)
-        {
-            LockMario();
-            ResetFrameCount(); 
-            yield return new WaitUntil(() => frame >= 50); 
-            TextController.Instance.CallText(TextController.TextAction.SetDitchClothesText);
-            sequenceCount++;
-        }
-        if (sequenceCount == 1)
-        {
-            ResetFrameCount(); 
-            yield return new WaitUntil(() => frame >= 100);
-           TextController.Instance.ClearText(); 
-            mario.MarioSpinJumps();
-            sequenceCount++;
-        }
-        if (sequenceCount == 2)
-        {
-            UnlockMario(); 
-            yield return new WaitUntil(() => platformEnterCount==2);
-            ResetFrameCount();
-            yield return new WaitUntil(() => frame >= 60);
-            TextController.Instance.CallText(TextController.TextAction.SetLetsGoText);
-            sequenceCount++;
-        }
-        if (sequenceCount == 3)
-        { 
-            yield return new WaitUntil(() => jumpFailCount == 1);
-            TextController.Instance.CallText(TextController.TextAction.SetExcuseText);
-            sequenceCount++;
-        }
-        if (sequenceCount == 4)
-        { 
-            yield return new WaitUntil(() => jumpFailCount == 2);
-            LockMario();
-            TextController.Instance.CallText(TextController.TextAction.SetThoughtText); 
-            sequenceCount++;
-        }
-        if (sequenceCount == 5)
-        {
-            ResetFrameCount();
-            yield return new WaitUntil(() => frame >= 200);
-            TextController.Instance.ClearText(); 
-            CallAction(MarioAction.FreakOut);
-            sequenceCount++;
-        }
-        if (sequenceCount == 6)
-        {
-            UnlockMario(); 
-            ResetPlatformCount();
-            yield return new WaitUntil(() => platformEnterCount == 1);
-            LockMario(); 
-            sequenceCount++;
-        }
-        if (sequenceCount == 7)
-        {
-            ResetFrameCount();
-            yield return new WaitUntil(() => frame >= 200);
-            CallAction(MarioAction.WalkBackOffPlatform);            
-            sequenceCount++;
-        } 
-        if (sequenceCount == 8)
-        {
-            ResetFrameCount();
-            yield return new WaitUntil(() => frame >= 50);
-            UnlockMario();
-            CallAction(MarioAction.InvertControls); 
-            sequenceCount++;
-        }  
-        if (sequenceCount == 9)
-        {
-            ResetFrameCount();
-            yield return new WaitUntil(() => frame >= 350);
-            CallAction(MarioAction.LimitJumps); 
-            sequenceCount++;
-        }
-        if (sequenceCount == 10)
-        {
-            yield return new WaitUntil(() => (jumpShortCount >= 11 && mario.gameObject.transform.localPosition.x < 2.2f) );
-            LockMario();
-            sequenceCount++;
-        }
-        if (sequenceCount == 11)
-        {
-            ResetFrameCount();
-            yield return new WaitUntil(() => frame >= 250);           
-            CallAction(MarioAction.WalkIntoSunshine);
-            sequenceCount++;
-        }
-        if (sequenceCount == 12)
-        {
-            yield return new WaitUntil(() => mario.gameObject.transform.localPosition.x > 4.5f);
-            sequenceCount++;
-        }
-        if (sequenceCount == 13)
-        {
-            ResetFrameCount();
-            yield return new WaitUntil(() => frame >= 150);
-            GameController.Instance.SetGameState(GameController.GameState.EndScreen);
-        }
-        //if (sequenceCount == 7)
-        //{
+        LockMario();
 
-        //    ResetFrameCount();
-        //    ResetPlatformCount();
-        //    yield return new WaitUntil(() => platformEnterCount == 1);
-        //    CallAction(MarioAction.WalkBackOffPlatform);
-        //    sequenceCount++;
-        //}
+        ResetFrameCount();
+        yield return new WaitUntil(() => frame >= 50);
+
+        TextController.Instance.CallText(TextController.TextAction.SetDitchClothesText);
+
+        if (GameController.Instance.textFreeMode == true)
+        { 
+            ResetFrameCount();
+            yield return new WaitUntil(() => frame >= 40);
+
+            CallAction(MarioAction.LittleHop);
+ 
+        }
+
+        ResetFrameCount();
+        yield return new WaitUntil(() => frame >= 100);
+
+        TextController.Instance.ClearText();
+
+        mario.MarioSpinJumps();
+
+        ResetFrameCount();
+        yield return new WaitUntil(() => frame >= 100);
+
+        UnlockMario();
+
+        yield return new WaitUntil(() => platformEnterCount == 2);
+
+        ResetFrameCount();
+        yield return new WaitUntil(() => frame >= 60);
+
+        TextController.Instance.CallText(TextController.TextAction.SetLetsGoText);
+
+        yield return new WaitUntil(() => jumpFailCount == 1);
+
+ 
+
+        TextController.Instance.CallText(TextController.TextAction.SetExcuseText);
+
+        if (GameController.Instance.textFreeMode == true)
+        {
+            LockMario();
+
+            ResetFrameCount();
+            yield return new WaitUntil(() => frame >= 40);
+
+            CallAction(MarioAction.LittleHop);
+
+            ResetFrameCount();
+            yield return new WaitUntil(() => frame >= 40);
+
+            CallAction(MarioAction.LittleFreakout);
+
+            ResetFrameCount();
+            yield return new WaitUntil(() => frame >= 20);
+
+            UnlockMario();
+        }
+
+        yield return new WaitUntil(() => jumpFailCount == 2);
+
+        LockMario();
+
+        TextController.Instance.CallText(TextController.TextAction.SetThoughtText);
+
+        ResetFrameCount();
+        yield return new WaitUntil(() => frame >= 120);
+
+        TextController.Instance.ClearText();
+
+        if (GameController.Instance.textFreeMode == true)
+        {
+            LockMario();
+
+            ResetFrameCount();
+            yield return new WaitUntil(() => frame >= 40);
+
+            CallAction(MarioAction.LittleHop);
+
+            ResetFrameCount();
+            yield return new WaitUntil(() => frame >= 40);
+
+            CallAction(MarioAction.LittleHop);
+
+            ResetFrameCount();
+            yield return new WaitUntil(() => frame >= 60); 
+        }
+
+        CallAction(MarioAction.FreakOut);
+
+        UnlockMario();
+
+        ResetPlatformCount();
+        yield return new WaitUntil(() => platformEnterCount == 1);
+
+        LockMario();
+
+        ResetFrameCount();
+        yield return new WaitUntil(() => frame >= 200);
+
+        CallAction(MarioAction.WalkBackOffPlatform);
+
+        ResetFrameCount();
+        yield return new WaitUntil(() => frame >= 50);
+
+        UnlockMario();
+
+        CallAction(MarioAction.InvertControls);
+
+        ResetFrameCount();
+        yield return new WaitUntil(() => frame >= 350);
+
+        CallAction(MarioAction.LimitJumps);
+
+        yield return new WaitUntil(() => (jumpShortCount >= 11 && mario.gameObject.transform.localPosition.x < 2.2f));
+
+        LockMario();
+
+        ResetFrameCount();
+        yield return new WaitUntil(() => frame >= 250);
+
+        CallAction(MarioAction.WalkIntoSunshine);
+
+        yield return new WaitUntil(() => mario.gameObject.transform.localPosition.x > 4.5f);
+
+        ResetFrameCount();
+        yield return new WaitUntil(() => frame >= 150);
+
+        GameController.Instance.SetGameState(GameController.GameState.EndScreen);
+
+
     }
     void ResetFrameCount()
     {
@@ -250,13 +276,23 @@ public class MarioAI : MonoBehaviour
 
 
 
+    void MarioLittleHop()
+    {
+        StartCoroutine(LittleHop());
+
+    }
+    void MarioSmallFreakOut()
+    {
+        mario.MarioFreaksSmall();
+
+    }
     void MarioFreakOut()
     {
         mario.MarioFreaks();
     }
     void MarioWalkBackOffPlatform()
     { 
-      StartCoroutine(  MoveMarioRight(1.5f, 1f));
+      StartCoroutine(  MoveMarioLeft(1.6f, 0.6f));
     }
        void MarioInverted()
     {
@@ -274,13 +310,7 @@ public class MarioAI : MonoBehaviour
     }
 
     // ----------- COROUTINES
-    //IEnumerator MarioWait(  float seconds)
-    //{ 
-    //    LockMario();
-    //    for (float t = 0.0f; t < seconds; t += Time.deltaTime)        
-    //        yield return null;        
-    //    UnlockMario();  
-    //}
+ 
     IEnumerator MoveMarioRight(float distance, float speed)
     {
         for (float t = 0.0f; t < distance; t += Time.deltaTime)
@@ -289,7 +319,23 @@ public class MarioAI : MonoBehaviour
             yield return null;  
         } 
     }
+    IEnumerator MoveMarioLeft( float distance, float speed)
+    {
+        for (float t = 0.0f; t < distance; t += Time.deltaTime)
+        {
+            mario.gameObject.transform.position += Vector3.left * speed * Time.deltaTime;
+            mario.skeletonSprite.GetComponent<SpriteRenderer>().flipX = true;
+            yield return null;
+        }
+    }
 
-
+    IEnumerator LittleHop ()
+    {
+        for (float t = 0.0f; t < 0.1f; t += Time.deltaTime)
+        {
+            mario.gameObject.transform.position += Vector3.up * 2f * Time.deltaTime; 
+            yield return null;
+        }
+    }
 
 }

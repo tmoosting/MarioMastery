@@ -34,6 +34,7 @@ public class MarioController : MonoBehaviour
         mario.chosenBodyType = (Mario.BodyType)indexList[1]-1;
         mario.chosenHandsType = (Mario.HandsType)indexList[2]-1;
         mario.chosenFeetType = (Mario.FeetType)indexList[3]-1;  
+        mario.chosenPowerupType = (Mario.PowerupType)indexList[4]-1;  
     }
    
     public void FlipControls()

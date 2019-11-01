@@ -39,6 +39,12 @@ public class TextController : MonoBehaviour
         textActionMapping.Add(TextAction.SetLetsGoText, SetImageTextFirstPlatformTrigger);
         textActionMapping.Add(TextAction.SetExcuseText, SetImageTextFirstJumpFail);
         textActionMapping.Add(TextAction.SetThoughtText, SetImageTextSecondJumpFail); 
+
+        if (GameController.Instance.textFreeMode == true)
+        {
+            MarioController.Instance.mario.textHolder.transform.localPosition = new Vector3(-200f, -200f, 0);
+            MarioController.Instance.mario.customText.gameObject.transform.localPosition = new Vector3(-200f, -200f, 0);
+        }
     }
     public void CallText(TextAction action)
     {
