@@ -42,7 +42,7 @@ public class DressController : MonoBehaviour
     public Dictionary<Mario.HandsType, Sprite> dressCharacter3 = new Dictionary<Mario.HandsType, Sprite>();
     public Dictionary<Mario.FeetType, Sprite> dressCharacter4 = new Dictionary<Mario.FeetType, Sprite>();
 
-    int index1 = 1;
+    int index1 = 2;
     int index2 = 1;
     int index3 = 1;
     int index4 = 1;
@@ -150,8 +150,8 @@ public class DressController : MonoBehaviour
     public void ArrowLeft1()
     {
         index1--;
-        if (index1 < 1)
-            index1 = 1;
+        if (index1 < 2)
+            index1 = 2;
         //if (index1 == 1)
         //    arrowLeft1.SetActive(false);
         //if (index1 == 3)
@@ -253,9 +253,9 @@ public class DressController : MonoBehaviour
 
     public void LoadDressToCharacter()
     {
-        characterHead.GetComponent<SpriteRenderer>().sprite = dressCharacter1[MarioController.Instance.misterMario.chosenHeadType];
-        characterBody.GetComponent<SpriteRenderer>().sprite = dressCharacter2[MarioController.Instance.misterMario.chosenBodyType];
-        characterHands .GetComponent<SpriteRenderer>().sprite = dressCharacter3[MarioController.Instance.misterMario.chosenHandsType];
-        characterFeet.GetComponent<SpriteRenderer>().sprite = dressCharacter4[MarioController.Instance.misterMario.chosenFeetType];
+        characterHead.GetComponent<SpriteRenderer>().sprite = dressCharacter1[MarioController.Instance.mario.chosenHeadType];
+        characterBody.GetComponent<SpriteRenderer>().sprite = dressCharacter2[MarioController.Instance.mario.chosenBodyType];
+        characterHands .GetComponent<SpriteRenderer>().sprite = dressCharacter3[MarioController.Instance.mario.chosenHandsType];
+        characterFeet.GetComponent<SpriteRenderer>().sprite = dressCharacter4[MarioController.Instance.mario.chosenFeetType];
     }
 }

@@ -3,6 +3,8 @@
 [RequireComponent(typeof(BoxCollider2D))]
 public class MarioCharacter : MonoBehaviour
 {
+
+    // Unfortunately named, fortunately glitched script
     [SerializeField, Tooltip("Max speed, in units per second, that the character moves.")]
     float speed = 9;
 
@@ -29,6 +31,7 @@ public class MarioCharacter : MonoBehaviour
     private bool grounded;
 
     public bool controlsInverted = false;
+    public bool jumpsLimited = false;
 
     private void Awake()
     {
@@ -37,13 +40,17 @@ public class MarioCharacter : MonoBehaviour
 
     private void Update()
     {
+        
+        
+            float moveInput = 0;
         if (GameController.Instance.allowMovement == true)
         {
-            float moveInput;
             if (controlsInverted == false)
-                 moveInput = Input.GetAxisRaw("Horizontal");
+                moveInput = Input.GetAxisRaw("Horizontal");
             else
                 moveInput = -Input.GetAxisRaw("Horizontal");
+        }
+          
 
             if (moveInput < 0)
             {
@@ -67,14 +74,18 @@ public class MarioCharacter : MonoBehaviour
 
                 if (Input.GetButtonDown("Jump"))
                 {
+                if (GameController.Instance.allowMovement == true)
+                {
                     SoundControllerScript.PlaySound("jump");
                     // Calculate the velocity required to achieve the target jump height.
-                    if (controlsInverted == true)
-                    {
-                        jumpHeight *= 0.85f;
-                        GameController.Instance.FailJump();
+                    if (jumpsLimited == true)
+                    { 
+                        jumpHeight *= 0.8f;
+                        MarioController.Instance.marioAI.CallTrigger(MarioAI.Trigger.JumpEverShorter);
                     }
                     velocity.y = Mathf.Sqrt(2 * jumpHeight * Mathf.Abs(Physics2D.gravity.y));
+                }
+                 
                 }
             }
 
@@ -124,8 +135,7 @@ public class MarioCharacter : MonoBehaviour
                     }
                 }
             }
-        }
-       
+        
       
     }
     public bool IsGrounded()

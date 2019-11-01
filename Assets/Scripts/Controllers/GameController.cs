@@ -11,10 +11,12 @@ public class GameController : MonoBehaviour
 
     GameState currentGameState;
     public bool skipToLevel;
+    [HideInInspector]
     public bool allowMovement = false;
+    public bool useAISequence;
 
     Mario mario;
-    int failedJumps = 0;
+    MarioAI marioAI;
     void Awake()
     {
         Instance = this; 
@@ -22,10 +24,10 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-
+        marioAI = MarioController.Instance.marioAI;
         OpenGame();
         TextController.Instance.HideTextPanel();
-        mario = MarioController.Instance.misterMario;
+        mario = MarioController.Instance.mario;
     }
 
    void OpenGame()
@@ -35,6 +37,7 @@ public class GameController : MonoBehaviour
         else
             SetGameState(GameState.WelcomeScreen); 
     } 
+
 
     public void SetGameState (GameState state)
     {
@@ -54,41 +57,45 @@ public class GameController : MonoBehaviour
         }
         if (state == GameState.LevelOpen)
         {
-            LevelController.Instance.LoadLevel(); 
-        }  
-        if (state == GameState.WalkedIn)
-        { 
-            StartCoroutine(PostWalkInDelay());  
-        }
-        if (state == GameState.ClothesDropped)
-        { 
-            SoundControllerScript.PlaySound("changing his clothes");
-            allowMovement = true;
-        }
-        if (state == GameState.JumpFailed)
-        { 
-            allowMovement = false;
-            StartCoroutine(PostFailDelay());
-        }
-        if (state == GameState.MarioFreaks)
-        { 
-           MarioController.Instance.misterMario.MarioFreaks(); 
-        }
-        if (state == GameState.DoneFreaking)
-        {
-            StartCoroutine(PostFreakDelay());
+            MarioController.Instance.LoadMario();
+            UIController.Instance.LoadLevel();
+            DressController.Instance.LoadDressToCharacter();
+            StartCoroutine(MoveMarioRight(0.6f, 2f));
 
         }
-        if (state == GameState.BadControls)
-        {
-            MarioController.Instance.FlipControls();
-            allowMovement = true;
-        } 
-        if (state == GameState.JumpedAround)
-        {            
-            allowMovement = false;
-            MarioController.Instance.misterMario.MarioWalksOff();
-        }
+      
+
+
+        //if (state == GameState.WalkedIn)
+        //{
+        //    StartCoroutine(PostWalkInDelay());
+        //}
+        //if (state == GameState.ClothesDropped)
+        //{
+        //    SoundControllerScript.PlaySound("changing his clothes");
+        //    allowMovement = true;
+        //}
+        //if (state == GameState.JumpFailed)
+        //{
+        //    allowMovement = false;
+        //    StartCoroutine(PostFailDelay());
+        //}
+        //if (state == GameState.MarioFreaks)
+        //{
+        //    MarioController.Instance.mario.MarioFreaks();
+        //}
+        //if (state == GameState.DoneFreaking)
+        //{
+        //    StartCoroutine(PostFreakDelay());
+
+        //}
+        //if (state == GameState.BadControls)
+        //{
+       //  MarioController.Instance.FlipControls();
+        //    allowMovement = true;
+        //}
+
+         
         if (state == GameState.EndScreen)
         {
             UIController.Instance.LoadEndScreen();
@@ -96,53 +103,61 @@ public class GameController : MonoBehaviour
         currentGameState = state;
     }
 
+    IEnumerator MoveMarioRight(float distance, float speed)
+    {
+        for (float t = 0.0f; t < distance; t += Time.deltaTime)
+        {
+            mario.gameObject.transform.position += Vector3.right * speed * Time.deltaTime;
+            yield return null;
+        }
+        MarioController.Instance.StartMarioAI();
+    }
+
     public GameState GetGameState()
     {
         return currentGameState;
     }
 
-    IEnumerator PostWalkInDelay()
-    {
-        for (float t = 0.0f; t < 3f; t += Time.deltaTime * 2)
-            yield return null;
-        mario.SetText1();
-        StartCoroutine(PostWalkInTextDelay());
-    }
-    IEnumerator PostWalkInTextDelay()
-    {
-        for (float t = 0.0f; t < 5f; t += Time.deltaTime * 2)
-            yield return null;
-        mario.ClearText();
-        MarioController.Instance.misterMario.MarioSpinsAndJumps();
-    }
-    IEnumerator PostFailDelay()
-    {
-        for (float t = 0.0f; t < 5f; t += Time.deltaTime * 2)
-            yield return null;
-        while (MarioController.Instance.misterMario.gameObject.transform.localPosition.y > 2f)
-            yield return null;
-        SetGameState(GameState.MarioFreaks);
-    }
-    IEnumerator PostFreakDelay()
-    {
-        for (float t = 0.0f; t < 0.5f; t += Time.deltaTime * 2)
-            yield return null;
-        SetGameState(GameState.BadControls);
-    }
-    IEnumerator PostJumpFailDelay()
-    {
-        for (float t = 0.0f; t < 8f; t += Time.deltaTime * 2)
-            yield return null;
-        SetGameState(GameState.JumpedAround);
-    }
+    //IEnumerator PostWalkInDelay()
+    //{
+    //    Debug.Log("PostWalkInTextDelay");
 
-    public void FailJump()
-    {
-        failedJumps++;
-        if (failedJumps == 9)
-        {
-            allowMovement = false;
-            StartCoroutine(PostJumpFailDelay());
-        }
-    }
+    //    for (float t = 0.0f; t < 0.1f; t += Time.deltaTime  )
+    //        yield return null;
+
+    //    TextController.Instance.CallText(TextController.TextAction.SetDitchClothesText);
+    //    StartCoroutine(PostWalkInTextDelay());
+    //}
+    //IEnumerator PostWalkInTextDelay()
+    //{
+      
+    //    for (float t = 0.0f; t < 0.2f; t += Time.deltaTime  )
+    //        yield return null;
+    //    mario.ClearText();
+    //    Debug.Log("PostWalkInTextDelay");
+    //    MarioController.Instance.mario.MarioSpinsAndJumps();
+    //}
+   
+
+    //IEnumerator PostFailDelay()
+    //{
+    //    for (float t = 0.0f; t < 5f; t += Time.deltaTime * 2)
+    //        yield return null;
+    //    while (MarioController.Instance.mario.gameObject.transform.localPosition.y > 2f)
+    //        yield return null;
+    //    SetGameState(GameState.MarioFreaks);
+    //}
+    //IEnumerator PostFreakDelay()
+    //{
+    //    for (float t = 0.0f; t < 0.5f; t += Time.deltaTime * 2)
+    //        yield return null;
+    //    SetGameState(GameState.BadControls);
+    //}
+    //IEnumerator PostJumpFailDelay()
+    //{
+    //    for (float t = 0.0f; t < 8f; t += Time.deltaTime * 2)
+    //        yield return null;
+    //    SetGameState(GameState.JumpedAround);
+    //}
+ 
 }

@@ -30,8 +30,15 @@ public class UIController : MonoBehaviour
     bool buttonPressedI = false;
     bool buttonPressedL = false;
 
+    public GameObject levelHolder;
+    public GameObject leftWall;
+    public GameObject rightWall;
+    public GameObject coin;
 
-
+    public void LoadLevel()
+    {
+        levelHolder.SetActive(true); 
+    }
 
     void Awake()
     {
@@ -46,7 +53,8 @@ public class UIController : MonoBehaviour
         marioFrame.SetActive(false);
         selectionHolder.SetActive(false);
         proceedButton.SetActive(true);
-        marioPanel.SetActive(false); 
+        marioPanel.SetActive(false);
+        levelHolder.SetActive(false);
     }
 
     private void Update()
@@ -73,7 +81,8 @@ public class UIController : MonoBehaviour
 
         if (Input.GetKeyDown("c"))
         {
-            LoadEndScreen();
+            //   LoadEndScreen();
+            TextController.Instance.CallCustomTextForSeconds("ooiiodssd that s ahshhds  dsajdsaj ", 6f);
         }
     }
 
