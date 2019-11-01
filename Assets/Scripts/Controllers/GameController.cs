@@ -28,14 +28,13 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         marioAI = MarioController.Instance.marioAI;
-        OpenGame();
-        TextController.Instance.HideTextPanel();
         mario = MarioController.Instance.mario;
+        OpenGame(); 
     }
 
    void OpenGame()
     { 
-            SetGameState(GameState.DressupScreen); 
+            SetGameState(GameState.WelcomeScreen); 
     } 
 
 
@@ -105,6 +104,8 @@ public class GameController : MonoBehaviour
         { 
             yield return null;
         }
+        UIController.Instance.MoveWorldTextToCorner();
+
         for (float t = 0.0f; t < distance; t += Time.deltaTime)
         {
             mario.gameObject.transform.position += Vector3.right * speed * Time.deltaTime;

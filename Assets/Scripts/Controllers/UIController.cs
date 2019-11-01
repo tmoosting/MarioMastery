@@ -20,6 +20,10 @@ public class UIController : MonoBehaviour
     public TextMeshProUGUI textOrginal;
     public TextMeshProUGUI textI;
     public TextMeshProUGUI textL;
+    public TextMeshProUGUI textWorldBig1;
+    public TextMeshProUGUI textWorldBig2;
+    public TextMeshProUGUI textWorldSmall1;
+    public TextMeshProUGUI textWorldSmall2; 
 
     public GameObject standingPlatform;
     public GameObject marioFrame;
@@ -83,7 +87,7 @@ public class UIController : MonoBehaviour
         if (Input.GetKeyDown("c"))
         {
             //   LoadEndScreen();
-            TextController.Instance.CallCustomTextForSeconds("ooiiodssd that s ahshhds  dsajdsaj ", 6f);
+            //  TextController.Instance.CallCustomTextForSeconds("ooiiodssd that s ahshhds  dsajdsaj ", 6f);
         }
     }
 
@@ -151,11 +155,43 @@ public class UIController : MonoBehaviour
         StartCoroutine(FadeBlackInBeforeLevel(1f, 3.5f));
         blackPanel.SetActive(true); 
     }
-    void EndFadeToLevel()
-    { 
-    
+    IEnumerator FadeBlackInBeforeLevel(float aValue, float aTime)
+    {
+        float alpha = blackPanel.GetComponent<Image>().color.a;
+        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / (aTime / 4))
+        {
+            Color newColor = new Color(0, 0, 0, Mathf.Lerp(alpha, aValue, t));
+            blackPanel.GetComponent<Image>().color = newColor;
+            yield return null;
+        }
+        powerupPanel.SetActive(false);
+        marioPanel.SetActive(false);
+        textWorldBig1.gameObject.SetActive(true);
+        textWorldBig2.gameObject.SetActive(true);
+        GameController.Instance.SetGameState(GameController.GameState.LevelOpen); 
+        StartCoroutine(FadeBlackOutBeforeLevel(0f, aTime));
     }
-
+    IEnumerator FadeBlackOutBeforeLevel(float aValue, float aTime)
+    {
+        float alpha = blackPanel.GetComponent<Image>().color.a; 
+        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / aTime)
+        {
+            Color newColor = new Color(0, 0, 0, Mathf.Lerp(alpha, aValue, t));
+            blackPanel.GetComponent<Image>().color = newColor;
+            yield return null;
+        }
+    }
+    public void MoveWorldTextToCorner()
+    {
+        textWorldBig1.gameObject.SetActive(false);
+        textWorldBig2.gameObject.SetActive(false);
+        textWorldSmall1.gameObject.SetActive(true);
+        textWorldSmall2.gameObject.SetActive(true);
+    }
+     public void SetWorldText()
+    {
+        textWorldSmall2.text = "1-0";
+    }
     void MaterializeDressUpScreen()
     {
         marioFrame.SetActive(true);
@@ -182,42 +218,11 @@ public class UIController : MonoBehaviour
     public void LoadEndScreen()
     {        
         Color transparent = new Color(0, 0, 0, 0);
-        blackPanel.GetComponent<Image>().color = transparent;
-
-        blackPanel.SetActive(true);
-
-        StartCoroutine(FadeBlackIn(1f, 3.5f)); 
-    
+        blackPanel.GetComponent<Image>().color = transparent; 
+        blackPanel.SetActive(true); 
+        StartCoroutine(FadeBlackIn(1f, 3.5f));  
     }
-    IEnumerator FadeBlackInBeforeLevel(float aValue, float aTime)
-    {
-        float alpha = blackPanel.GetComponent<Image>().color.a;
-        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / (aTime /4))
-        {
-            Color newColor = new Color(0, 0, 0, Mathf.Lerp(alpha, aValue, t));
-            blackPanel.GetComponent<Image>().color = newColor;
-            yield return null;
-        }
-        powerupPanel.SetActive(false);
-        marioPanel.SetActive(false);
-        GameController.Instance.SetGameState(GameController.GameState.LevelOpen);
-
-
-
-        StartCoroutine(FadeBlackOutBeforeLevel(0f, aTime));
-    }
-    IEnumerator FadeBlackOutBeforeLevel(float aValue, float aTime)
-    {
-        float alpha = blackPanel.GetComponent<Image>().color.a;
-        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / aTime)
-        {
-            Color newColor = new Color(0, 0, 0, Mathf.Lerp(alpha, aValue, t));
-            blackPanel.GetComponent<Image>().color = newColor;
-            yield return null;
-        }
-
-        EndFadeToLevel();
-    }
+  
     IEnumerator FadeBlackIn(float aValue, float aTime)
     { 
         float alpha = blackPanel.GetComponent<Image>().color.a;
@@ -235,6 +240,7 @@ public class UIController : MonoBehaviour
             yield return null;
         endPanel.SetActive(true);
         StartCoroutine(FadeBlackOut(0f, 6f));
+        SetWorldText();
     }
     IEnumerator FadeBlackOut(float aValue, float aTime)
     {

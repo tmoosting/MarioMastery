@@ -292,7 +292,7 @@ public class MarioAI : MonoBehaviour
     }
     void MarioWalkBackOffPlatform()
     { 
-      StartCoroutine(  MoveMarioLeft(1.6f, 0.6f));
+      StartCoroutine(  MoveMarioLeft(1.7f, 0.6f));
     }
        void MarioInverted()
     {
