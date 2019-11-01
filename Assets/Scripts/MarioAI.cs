@@ -109,24 +109,11 @@ public class MarioAI : MonoBehaviour
 
         TextController.Instance.CallText(TextController.TextAction.SetLetsGoText);
 
-        LockMario();
-        ResetFrameCount();
-        yield return new WaitUntil(() => frame >= 60);
-        UnlockMario();
-
         yield return new WaitUntil(() => jumpFailCount == 1);
 
-       
-        ResetFrameCount();
-        yield return new WaitUntil(() => frame >= 140);
+ 
 
-
-
-        TextController.Instance.ClearText();
         TextController.Instance.CallText(TextController.TextAction.SetExcuseText);
-
-        ResetFrameCount();
-        yield return new WaitUntil(() => frame >= 140);
 
         if (GameController.Instance.textFreeMode == true)
         {
@@ -148,7 +135,7 @@ public class MarioAI : MonoBehaviour
             UnlockMario();
         }
 
-        yield return new WaitUntil(() => jumpFailCount == 3);
+        yield return new WaitUntil(() => jumpFailCount == 2);
 
         LockMario();
 
@@ -295,7 +282,8 @@ public class MarioAI : MonoBehaviour
     }
     void MarioSmallFreakOut()
     {
-        mario.MarioFreaksSmall(); 
+        mario.MarioFreaksSmall();
+
     }
     void MarioFreakOut()
     {
