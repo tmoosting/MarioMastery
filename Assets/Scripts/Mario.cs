@@ -152,10 +152,12 @@ public class Mario : MonoBehaviour
     public void MarioFreaksSmall()
     {
         StartCoroutine(SmallLeft());
+        
     }
 
     public void MarioFreaks()
-    { 
+    {
+        RemovePowerup();
         StartCoroutine(VeryFirstLeft());
     }
     void MarioDoneFreaking()
@@ -410,7 +412,10 @@ public class Mario : MonoBehaviour
     
         MarioHasSpinned(); 
     }
-
+    public void RemovePowerup()
+    { 
+        StartCoroutine(DropPowerup());
+    }
     void RemoveHat()
     {
         SoundControllerScript.PlaySound("jump"); 
@@ -429,7 +434,19 @@ public class Mario : MonoBehaviour
         StartCoroutine(FlyFeet());
     }
 
+    IEnumerator DropPowerup()
+    {
+        Debug.Log("strtin drop");
+        float runDistance = 100f;
+        float runSpeed = 10.0f;
 
+        for (float t = 0.0f; t < runDistance; t += Time.deltaTime)
+        { 
+            powerupSprite.gameObject.transform.position += Vector3.up * runSpeed * Time.deltaTime  ;
+            yield return null;
+        }
+       powerupSprite.gameObject.SetActive(false);
+    }
     IEnumerator FlyHat()
     {
         float runDistance = 46f;
