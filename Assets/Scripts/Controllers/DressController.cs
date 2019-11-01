@@ -20,32 +20,39 @@ public class DressController : MonoBehaviour
     public Image imageBox2;
     public Image imageBox3;
     public Image imageBox4;
+    public Image imageBox5;
     public Image imageFrame1; 
     public Image imageFrame2; 
     public Image imageFrame3; 
     public Image imageFrame4;
+    public Image imageFrame5;
     public GameObject characterHead;
     public GameObject characterBody;
     public GameObject characterHands;
     public GameObject characterFeet;
+    public GameObject characterPowerup;
 
+    public Dictionary<int, Sprite> powerupSelection = new Dictionary<int, Sprite>();
     public Dictionary<int, Sprite> dressSelection1 = new Dictionary<int, Sprite>();
     public Dictionary<int, Sprite> dressSelection2 = new Dictionary<int, Sprite>();
     public Dictionary<int, Sprite> dressSelection3 = new Dictionary<int, Sprite>();
     public Dictionary<int, Sprite> dressSelection4 = new Dictionary<int, Sprite>();
+    public Dictionary<int, Sprite> powerupFrame = new Dictionary<int, Sprite>();
     public Dictionary<int, Sprite> dressFrame1 = new Dictionary<int, Sprite>();
     public Dictionary<int, Sprite> dressFrame2 = new Dictionary<int, Sprite>();
     public Dictionary<int, Sprite> dressFrame3 = new Dictionary<int, Sprite>();
     public Dictionary<int, Sprite> dressFrame4 = new Dictionary<int, Sprite>();
+    public Dictionary<Mario.PowerupType, Sprite> powerupCharacter = new Dictionary<Mario.PowerupType, Sprite>();
     public Dictionary<Mario.HeadType, Sprite> dressCharacter1 = new Dictionary<Mario.HeadType, Sprite>();
     public Dictionary<Mario.BodyType, Sprite> dressCharacter2 = new Dictionary<Mario.BodyType, Sprite>();
     public Dictionary<Mario.HandsType, Sprite> dressCharacter3 = new Dictionary<Mario.HandsType, Sprite>();
     public Dictionary<Mario.FeetType, Sprite> dressCharacter4 = new Dictionary<Mario.FeetType, Sprite>();
 
-    int index1 = 1;
+    int index1 = 2;
     int index2 = 1;
     int index3 = 1;
     int index4 = 1;
+    int index5 = 1;
 
     void Awake()
     {
@@ -54,10 +61,16 @@ public class DressController : MonoBehaviour
 
     public void InitializeDressPanel()
     {
+        powerupSelection.Add(1, SpriteController.Instance.powerupBox);
+        powerupSelection.Add(2, SpriteController.Instance.powerupBox2);
+        powerupSelection.Add(3, SpriteController.Instance.powerupBox3);
         dressSelection1.Add(1, SpriteController.Instance.dressHead1);
         dressSelection1.Add(2, SpriteController.Instance.dressHead2);
         dressSelection1.Add(3, SpriteController.Instance.dressHead3);
         dressSelection1.Add(4, SpriteController.Instance.dressHead4);
+        powerupFrame.Add(1, SpriteController.Instance.powerupFrame);
+        powerupFrame.Add(2, SpriteController.Instance.powerupFrame2);
+        powerupFrame.Add(3, SpriteController.Instance.powerupFrame3);
         dressFrame1.Add(1, SpriteController.Instance.dressFrameHead1);
         dressFrame1.Add(2, SpriteController.Instance.dressFrameHead2);
         dressFrame1.Add(3, SpriteController.Instance.dressFrameHead3);
@@ -90,6 +103,9 @@ public class DressController : MonoBehaviour
         dressFrame4.Add(3, SpriteController.Instance.dressFrameFeet3);
         dressFrame4.Add(4, SpriteController.Instance.dressFrameFeet4);  
 
+        powerupCharacter.Add(Mario.PowerupType.Power1, SpriteController.Instance.powerupMario);
+        powerupCharacter.Add(Mario.PowerupType.Power2, SpriteController.Instance.powerupMario2);
+        powerupCharacter.Add(Mario.PowerupType.Power3, SpriteController.Instance.powerupMario3);
         dressCharacter1.Add(Mario.HeadType.Head1, SpriteController.Instance.dressCharacterHead1);
         dressCharacter1.Add(Mario.HeadType.Head2, SpriteController.Instance.dressCharacterHead2);
         dressCharacter1.Add(Mario.HeadType.Head3, SpriteController.Instance.dressCharacterHead3);
@@ -112,8 +128,16 @@ public class DressController : MonoBehaviour
         imageFrame2.gameObject.SetActive(false);
         imageFrame3.gameObject.SetActive(false);
         imageFrame4.gameObject.SetActive(false);
+        imageFrame5.gameObject.SetActive(false);
 
         ReloadImages();
+    }
+    public void ReloadPowerupImages()
+    {
+        imageBox5.GetComponent<Image>().sprite = powerupSelection[index5];
+        imageFrame5.GetComponent<Image>().sprite = powerupFrame[index5];
+        if (index5 > 0)
+            imageFrame5.gameObject.SetActive(true);
     }
 
     public void ReloadImages()
@@ -150,13 +174,20 @@ public class DressController : MonoBehaviour
     public void ArrowLeft1()
     {
         index1--;
-        if (index1 < 1)
-            index1 = 1;
+        if (index1 < 2)
+            index1 = 2;
         //if (index1 == 1)
         //    arrowLeft1.SetActive(false);
         //if (index1 == 3)
         //    arrowRight1.SetActive(true);
         ReloadImages();
+    }
+    public void ArrowLeftPowerup()
+    {
+        index5--;
+        if (index5 < 1)
+            index5 = 1;
+        ReloadPowerupImages();
     }
     public void ArrowLeft2()
     {
@@ -203,6 +234,14 @@ public class DressController : MonoBehaviour
         ReloadImages();
         UIController.Instance.proceedButton.SetActive(true);
     }
+    public void ArrowRightPowerup()
+    {
+        index5++;
+        if (index5 > 4)
+            index5 = 4; 
+        ReloadPowerupImages();
+    //    UIController.Instance.proceedButton.SetActive(true);
+    }
     public void ArrowRight2()
     {
         index2++;
@@ -247,15 +286,17 @@ public class DressController : MonoBehaviour
         returnList.Add(index2);
         returnList.Add(index3);
         returnList.Add(index4);
+        returnList.Add(index5);
         return returnList;
     }
 
 
     public void LoadDressToCharacter()
     {
-        characterHead.GetComponent<SpriteRenderer>().sprite = dressCharacter1[MarioController.Instance.misterMario.chosenHeadType];
-        characterBody.GetComponent<SpriteRenderer>().sprite = dressCharacter2[MarioController.Instance.misterMario.chosenBodyType];
-        characterHands .GetComponent<SpriteRenderer>().sprite = dressCharacter3[MarioController.Instance.misterMario.chosenHandsType];
-        characterFeet.GetComponent<SpriteRenderer>().sprite = dressCharacter4[MarioController.Instance.misterMario.chosenFeetType];
+        characterHead.GetComponent<SpriteRenderer>().sprite = dressCharacter1[MarioController.Instance.mario.chosenHeadType];
+        characterBody.GetComponent<SpriteRenderer>().sprite = dressCharacter2[MarioController.Instance.mario.chosenBodyType];
+        characterHands .GetComponent<SpriteRenderer>().sprite = dressCharacter3[MarioController.Instance.mario.chosenHandsType];
+        characterFeet.GetComponent<SpriteRenderer>().sprite = dressCharacter4[MarioController.Instance.mario.chosenFeetType];
+        characterPowerup.GetComponent<SpriteRenderer>().sprite = powerupCharacter[MarioController.Instance.mario.chosenPowerupType];
     }
 }

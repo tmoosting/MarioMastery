@@ -62,7 +62,7 @@ public class GameController : MonoBehaviour
         }
         if (state == GameState.ClothesDropped)
         { 
-            SoundControllerScript.PlaySound("changing his clothes");
+           
             allowMovement = true;
         }
         if (state == GameState.JumpFailed)

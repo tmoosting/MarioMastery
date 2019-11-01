@@ -122,7 +122,8 @@ public class Mario : MonoBehaviour
     }
     // --------------------------- WALK OFF
 
-    public void MarioWalksOff()
+ 
+    public void MarioWalksOff() 
     {
         StartCoroutine(WalkOff());
     }
@@ -284,7 +285,8 @@ public class Mario : MonoBehaviour
     // --------------------------- SPINJUMP
 
     public void MarioSpinsAndJumps()
-    { 
+    {
+        
         StartCoroutine(StartCoroutineAfterSeconds(SpinJump(), MarioController.Instance.PreSpinPauseTime));
     }
     void MarioHasJumped()
@@ -309,6 +311,7 @@ public class Mario : MonoBehaviour
         float jumpSpeed = 2f;
         Mario mario = MarioController.Instance.misterMario;
         Transform marioTransform = mario.gameObject.transform;
+       
 
         for (float t = 0.0f; t < jumpHeight; t += Time.deltaTime)
         {
@@ -352,7 +355,10 @@ public class Mario : MonoBehaviour
              RemoveHat();
         MarioHasSpinned(); 
     }
-
+    public void RemovePowerup()
+    { 
+        StartCoroutine(DropPowerup());
+    }
     void RemoveHat()
     {
         hatRemoved = true;
@@ -369,7 +375,19 @@ public class Mario : MonoBehaviour
         StartCoroutine(FlyFeet());
     }
 
+    IEnumerator DropPowerup()
+    {
+        Debug.Log("strtin drop");
+        float runDistance = 100f;
+        float runSpeed = 10.0f;
 
+        for (float t = 0.0f; t < runDistance; t += Time.deltaTime)
+        { 
+            powerupSprite.gameObject.transform.position += Vector3.up * runSpeed * Time.deltaTime  ;
+            yield return null;
+        }
+       powerupSprite.gameObject.SetActive(false);
+    }
     IEnumerator FlyHat()
     {
         float runDistance = 36f;

@@ -6,8 +6,10 @@ public class MarioController : MonoBehaviour
 {
     public static MarioController Instance;
 
-    public Mario misterMario;
-
+    public Mario mario;
+    public MarioAI marioAI;
+    public float PreSpinPauseTime = 0f;
+    public float FreakoutBaseSpeed = 2f;
     int failCount = 0;
 
     void Awake()
@@ -15,22 +17,33 @@ public class MarioController : MonoBehaviour
         Instance = this;
     }
 
+    public void LoadMario()
+    {
+        DressController.Instance.LoadDressToCharacter();
+    }
+    public void StartMarioAI()
+    {
+        marioAI.StartSequence();
+    }
 
-    public float PreSpinPauseTime = 0f;
-    public float FreakoutBaseSpeed = 2f;
-
+     
 
     public void SetMarioDress(List<int> indexList)
     {  
-        misterMario.chosenHeadType = (Mario.HeadType)indexList[0]-1;
-        misterMario.chosenBodyType = (Mario.BodyType)indexList[1]-1;
-        misterMario.chosenHandsType = (Mario.HandsType)indexList[2]-1;
-        misterMario.chosenFeetType = (Mario.FeetType)indexList[3]-1;  
+        mario.chosenHeadType = (Mario.HeadType)indexList[0]-1;
+        mario.chosenBodyType = (Mario.BodyType)indexList[1]-1;
+        mario.chosenHandsType = (Mario.HandsType)indexList[2]-1;
+        mario.chosenFeetType = (Mario.FeetType)indexList[3]-1;  
+        mario.chosenPowerupType = (Mario.PowerupType)indexList[4]-1;  
     }
    
     public void FlipControls()
     {
-        misterMario.gameObject.GetComponent<MarioCharacter>().controlsInverted = true;
+        mario.gameObject.GetComponent<MarioCharacter>().controlsInverted = true;
+    }  
+    public void LimitJumps()
+    {
+        mario.gameObject.GetComponent<MarioCharacter>().jumpsLimited = true;
     }
     public bool DressupComplete()
     {
@@ -42,33 +55,16 @@ public class MarioController : MonoBehaviour
     }
 
 
-    public void MoveMarioIntoLevel()
+   
+
+
+    public bool IsMarioOnGround()
     {
-        // TODO: mario moves in from the side of the screen.  
-       StartCoroutine(MoveMarioRight());
-
-
+        if (MarioController.Instance.mario.gameObject.GetComponent<MarioCharacter>().IsGrounded() == true)
+            return true;
+        else
+            return false;
     }
-    void MarioHasMovedIntoLevel()
-    {
-        LevelController.Instance.leftWall.SetActive(true);
-        GameController.Instance.SetGameState(GameController.GameState.WalkedIn); 
-    }
-    IEnumerator MoveMarioRight( )
-    {
-        Transform mt = misterMario.gameObject.transform;
-        Vector2 currentPos = mt.localPosition; 
-
-        for (float t = 0.0f; t < 2.5f; t += Time.deltaTime )
-        {
-            mt.position += Vector3.right *  0.5f * Time.deltaTime;
-            yield return null;
-    
-        }
-        MarioHasMovedIntoLevel();
-    }
-
-
     
     public void MarioHasFailedJump()
     {
@@ -85,15 +81,15 @@ public class MarioController : MonoBehaviour
     }
     IEnumerator Text3OnLand()
     {
-        while (misterMario.GetComponent<MarioCharacter>().IsGrounded() == false)
+        while (mario.GetComponent<MarioCharacter>().IsGrounded() == false)
             yield return null;
-        misterMario.SetText3();
+        TextController.Instance.SetImageTextFirstJumpFail();
     }
     IEnumerator Text4OnLand()
     {
-        while (misterMario.GetComponent<MarioCharacter>().IsGrounded() == false)
+        while (mario.GetComponent<MarioCharacter>().IsGrounded() == false)
             yield return null;
-        misterMario.SetText4();
+        TextController.Instance.SetImageTextSecondJumpFail();
     }
     IEnumerator FailDelay()
     {
@@ -101,12 +97,12 @@ public class MarioController : MonoBehaviour
         {
             yield return null;       
         }        
-        misterMario.failTriggered = false;
+        mario.failTriggered = false;
        // Debug.Log("failed post");
     }
     IEnumerator WaitToHitGround()
     {
-        while (misterMario.gameObject.GetComponent<MarioCharacter>().IsGrounded() == false)
+        while (mario.gameObject.GetComponent<MarioCharacter>().IsGrounded() == false)
             yield return null;
 
         GameController.Instance.SetGameState(GameController.GameState.JumpFailed);

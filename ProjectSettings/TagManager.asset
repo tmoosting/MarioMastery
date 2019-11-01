@@ -62,3 +62,6 @@ TagManager:
   - name: MarioHigh
     uniqueID: 934965827
     locked: 0
+  - name: MarioHighest
+    uniqueID: 1292038763
+    locked: 0

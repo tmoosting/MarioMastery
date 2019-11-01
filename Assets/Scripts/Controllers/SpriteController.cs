@@ -12,6 +12,17 @@ public class SpriteController : MonoBehaviour
     }
 
 
+    public Sprite powerupBox;
+    public Sprite powerupBox2;
+    public Sprite powerupBox3;
+    public Sprite powerupFrame;
+    public Sprite powerupFrame2;
+    public Sprite powerupFrame3;
+    public Sprite powerupMario;
+    public Sprite powerupMario2;
+    public Sprite powerupMario3;
+
+
     public Sprite dressHead1;
     public Sprite dressHead2;
     public Sprite dressHead3;
