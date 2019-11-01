@@ -68,11 +68,13 @@ public class UIController : MonoBehaviour
         {
             buttonPressedI = true;
             UpdateTitleScreen();
+            SoundControllerScript.PlaySound("mario-woohoo");
         }
         else if (Input.GetKeyDown("l") && firstPressPassed == false)
         {
             buttonPressedL = true;
             UpdateTitleScreen();
+            SoundControllerScript.PlaySound("mario-woohoo");
         }
         if (firstPressPassed == true)
         {

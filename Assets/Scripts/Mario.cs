@@ -5,22 +5,21 @@ using TMPro;
 
 public class Mario : MonoBehaviour
 {
-
-    public enum PowerupType { Power1, Power2, Power3  }
+   
     public enum HeadType { Head1, Head2, Head3, Head4  }
     public enum BodyType { Body1, Body2, Body3, Body4  }
     public enum HandsType { Hands1, Hands2, Hands3, Hands4  }
     public enum FeetType { Feet1, Feet2, Feet3, Feet4  }
-     
+
+    public Animation anim;
+
     public SpriteRenderer headSprite;
     public SpriteRenderer bodySprite;
     public SpriteRenderer feetSprite;
-    public SpriteRenderer powerupSprite;
     public GameObject textHolder;
     public TextMeshProUGUI customText;
+     
 
-
-    public PowerupType chosenPowerupType;
     public HeadType chosenHeadType;
     public BodyType chosenBodyType;
     public HandsType chosenHandsType;
@@ -28,15 +27,13 @@ public class Mario : MonoBehaviour
 
     public GameObject skeletonSprite;
     public Sprite emptyText;
+    public Sprite text1;
+    public Sprite text2;
+    public Sprite text3;
+    public Sprite text4;
+    public Sprite text5;
 
-
-    public bool hasCoin = false;
-
-    bool onPlatform;
-    bool failedStillMidAir;
-
-    [HideInInspector]
-    public bool isSpinJumping = false;
+    bool starMessageTriggered = false;
 
     bool hatRemoved = false;
     bool bodyRemoved = false;
@@ -45,51 +42,25 @@ public class Mario : MonoBehaviour
     int flipCounter;
     bool flipped = false;
     public bool failTriggered = false;
-
-    public void EnterPlatform()
-    { 
-        MarioController.Instance.marioAI.CallTrigger(MarioAI.Trigger.EnterPlatform); 
-    }
-    public void ExitPlatform()
-    {
-        MarioController.Instance.marioAI.CallTrigger(MarioAI.Trigger.ExitPlatform); 
-    }
-    void FailJumpMidAir()
-    {
-        failedStillMidAir = true;
-        MarioController.Instance.marioAI.CallTrigger(MarioAI.Trigger.FailJumpMidAir); 
-    }
-    void FailJumpMidLand()
-    {
-        failedStillMidAir = false;
-        MarioController.Instance.marioAI.CallTrigger(MarioAI.Trigger.FallJumpLand);
-    }
-    void GrabCoin()
-    {
-        hasCoin = true;
-        UIController.Instance.coin.SetActive(false);
-        SoundControllerScript.PlaySound("coin");
-    }
+ 
     private void Update()
     {
-        if (gameObject.transform.localPosition.x > 0.92f && gameObject.transform.localPosition.x < 2f && gameObject.transform.localPosition.y > 1.92f)
-            if (onPlatform == false)
-                EnterPlatform();
-        if (gameObject.transform.localPosition.x < 0.92f || gameObject.transform.localPosition.x > 2f || gameObject.transform.localPosition.y < 1.92f)
-            if (onPlatform == true)
-                ExitPlatform();
+        if (gameObject.transform.localPosition.x > 1.2f && gameObject.transform.localPosition.x < 1.8f)
+            if (gameObject.transform.localPosition.y > 1.9f)
+                if (starMessageTriggered == false)
+                {
+                    starMessageTriggered = true;
+                    SetText2();
+                }
 
-        if (gameObject.transform.localPosition.x > 1.32f && gameObject.transform.localPosition.x < 1.6f && gameObject.transform.localPosition.y > 1.9f)
-            if (hasCoin == false)
-                GrabCoin();
+        if (gameObject.transform.localPosition.x > 2.9f && gameObject.transform.localPosition.y > 2.71f)
+            if (failTriggered == false)
+            {
+                failTriggered = true;
+                MarioController.Instance.MarioHasFailedJump();
+            }
 
-        if (failedStillMidAir == true)
-            if (MarioController.Instance.IsMarioOnGround() == true)
-                FailJumpMidLand();
-
-        if (gameObject.transform.localPosition.x > 2.97f && gameObject.transform.localPosition.y > 2.7f)
-            if (failedStillMidAir == false)
-                FailJumpMidAir();
+     
 
         // fix for fall through floor after failed jump
         if ( gameObject.transform.localPosition.y < 0.8f) 
@@ -100,117 +71,99 @@ public class Mario : MonoBehaviour
             gameObject.transform.localPosition = new Vector3(gameObject.transform.localPosition.x, 1.021633f, 0); 
     }
 
-  
-    // ---------------- LAZY MODE TEXTS
-    public void ClearText()
-    {
+    // LAZY MODE TEXTS
+
+        public void ClearText()
+    { 
         customText.gameObject.SetActive(false);
         textHolder.SetActive(false);
     }
-    public void SetCustomText(string str)
+        public void SetCustomText(string str)
     {
         customText.gameObject.SetActive(true);
         textHolder.SetActive(true);
         customText.text = str;
-        textHolder.GetComponent<SpriteRenderer>().sprite = emptyText;
+        textHolder.GetComponent<SpriteRenderer>().sprite = emptyText; 
     }
- 
-    public IEnumerator ClearTextAfterSeconds(float seconds)
+    public void SetText1()
+    {
+        textHolder.SetActive(true);
+        textHolder.GetComponent<SpriteRenderer>().sprite = text1;
+    }
+    public void SetText2()
+    {
+        textHolder.SetActive(true);
+        textHolder.GetComponent<SpriteRenderer>().sprite = text2;
+        StartCoroutine(ClearTextAfterAWhile());
+    }
+    public void SetText3()
+    {
+        textHolder.SetActive(true);
+        textHolder.GetComponent<SpriteRenderer>().sprite = text3;
+        StartCoroutine(ClearTextAfterAWhile());
+    }
+    public void SetText4()
+    {
+        textHolder.SetActive(true);
+        textHolder.GetComponent<SpriteRenderer>().sprite = text4; 
+        StartCoroutine(ClearTextAfterAWhile());
+    }
+    public void SetText5()
+    {
+        textHolder.SetActive(true);
+        textHolder.GetComponent<SpriteRenderer>().sprite = text4;
+        StartCoroutine(ClearTextAfterAWhile());
+    }
+    IEnumerator ClearTextAfterAWhile()
     { 
-        for (float t = 0.0f; t < seconds; t += Time.deltaTime * 2)
+        for (float t = 0.0f; t < 6f; t += Time.deltaTime * 2)
             yield return null;
         ClearText();
     }
     // --------------------------- WALK OFF
 
-    //public void MarioWalksOff()
-    //{
-    //    StartCoroutine(WalkOff());
-    //}
-    //void MarioHasWalkedOff()
-    //{
-    //    GameController.Instance.SetGameState(GameController.GameState.EndScreen);
-    //}
-    //IEnumerator WalkOff()
-    //{
-    //    float runDistance = 6f;
-    //    float runSpeed =  0.7f;
-    //    Mario mario = MarioController.Instance.mario;
-    //    Transform marioTransform = mario.gameObject.transform;
-
-    //    for (float t = 0.0f; t < runDistance; t += Time.deltaTime)
-    //    {
-    //        mario.skeletonSprite.GetComponent<SpriteRenderer>().flipX = false;
-    //        marioTransform.position += Vector3.right * runSpeed * Time.deltaTime;
-    //        yield return null;
-    //    }
-    //    MarioHasWalkedOff();
-    //}
-
-    // --------------------------- FREAKOUTS
-
-    public void MarioFreaksSmall()
+ 
+    public void MarioWalksOff() 
     {
-        StartCoroutine(SmallLeft());
-        
+        StartCoroutine(WalkOff());
     }
+    void MarioHasWalkedOff()
+    {
+        GameController.Instance.SetGameState(GameController.GameState.EndScreen);
+    }
+    IEnumerator WalkOff()
+    {
+        float runDistance = 6f;
+        float runSpeed =  0.7f;
+        Mario mario = MarioController.Instance.misterMario;
+        Transform marioTransform = mario.gameObject.transform;
+
+        for (float t = 0.0f; t < runDistance; t += Time.deltaTime)
+        {
+            mario.skeletonSprite.GetComponent<SpriteRenderer>().flipX = false;
+            marioTransform.position += Vector3.right * runSpeed * Time.deltaTime;
+            yield return null;
+        }
+        MarioHasWalkedOff();
+    }
+
+    // --------------------------- FREAKOUT
 
     public void MarioFreaks()
     {
-        RemovePowerup();
         StartCoroutine(VeryFirstLeft());
     }
     void MarioDoneFreaking()
     {
         GameController.Instance.SetGameState(GameController.GameState.DoneFreaking);
     }
-    IEnumerator SmallLeft()
-    {
-        float runDistance = 0.1f;
-        float runSpeed = MarioController.Instance.FreakoutBaseSpeed * 2.4f;
-        Mario mario = MarioController.Instance.mario;
-        Transform marioTransform = mario.gameObject.transform; 
-        for (float t = 0.0f; t < runDistance; t += Time.deltaTime)
-        {
-            mario.skeletonSprite.GetComponent<SpriteRenderer>().flipX = true;
-            marioTransform.position += Vector3.left * runSpeed * Time.deltaTime;
-            yield return null;
-        }
-        StartCoroutine(SmallRight());
-    }
-    IEnumerator SmallRight()
-    {
-        float runDistance = 0.12f;
-        float runSpeed = MarioController.Instance.FreakoutBaseSpeed * 2.2f;
-        Mario mario = MarioController.Instance.mario;
-        Transform marioTransform = mario.gameObject.transform;
-        for (float t = 0.0f; t < runDistance; t += Time.deltaTime)
-        {
-            mario.skeletonSprite.GetComponent<SpriteRenderer>().flipX = false;
-            marioTransform.position += Vector3.right * runSpeed * Time.deltaTime;
-            yield return null;
-        } 
-        StartCoroutine(SmallLeftAgain());
-    }
-    IEnumerator SmallLeftAgain()
-    {
-        float runDistance = 0.07f;
-        float runSpeed = MarioController.Instance.FreakoutBaseSpeed * 2f;
-        Mario mario = MarioController.Instance.mario;
-        Transform marioTransform = mario.gameObject.transform;
-        for (float t = 0.0f; t < runDistance; t += Time.deltaTime)
-        {
-            mario.skeletonSprite.GetComponent<SpriteRenderer>().flipX = true;
-            marioTransform.position += Vector3.left * runSpeed * Time.deltaTime;
-            yield return null;
-        }
-    }
+
     // TODO: Combine all below into one adjustable coroutine
     IEnumerator VeryFirstLeft()
     {
         float runDistance = 0.3f;
         float runSpeed = MarioController.Instance.FreakoutBaseSpeed * 2f;
-        Mario mario = MarioController.Instance.mario;
+        Mario mario = MarioController.Instance.misterMario;
         Transform marioTransform = mario.gameObject.transform;
 
       ClearText();
@@ -228,7 +181,7 @@ public class Mario : MonoBehaviour
     {
         float runDistance = 0.3f;
         float runSpeed = MarioController.Instance.FreakoutBaseSpeed *1.5f;
-        Mario mario = MarioController.Instance.mario;
+        Mario mario = MarioController.Instance.misterMario;
         Transform marioTransform = mario.gameObject.transform;
 
         for (float t = 0.0f; t < runDistance; t += Time.deltaTime)
@@ -243,7 +196,7 @@ public class Mario : MonoBehaviour
     {
         float runDistance = 0.25f;
         float runSpeed = MarioController.Instance.FreakoutBaseSpeed * 1.3f;
-        Mario mario = MarioController.Instance.mario;
+        Mario mario = MarioController.Instance.misterMario;
         Transform marioTransform = mario.gameObject.transform;
 
         for (float t = 0.0f; t < runDistance; t += Time.deltaTime)
@@ -258,7 +211,7 @@ public class Mario : MonoBehaviour
     {
         float runDistance = 0.25f;
         float runSpeed = MarioController.Instance.FreakoutBaseSpeed * 1.1f;
-        Mario mario = MarioController.Instance.mario;
+        Mario mario = MarioController.Instance.misterMario;
         Transform marioTransform = mario.gameObject.transform;
 
         for (float t = 0.0f; t < runDistance; t += Time.deltaTime)
@@ -273,7 +226,7 @@ public class Mario : MonoBehaviour
     {
         float runDistance = 0.25f;
         float runSpeed = MarioController.Instance.FreakoutBaseSpeed *1.2f;
-        Mario mario = MarioController.Instance.mario;
+        Mario mario = MarioController.Instance.misterMario;
         Transform marioTransform = mario.gameObject.transform;
 
         for (float t = 0.0f; t < runDistance; t += Time.deltaTime)
@@ -288,7 +241,7 @@ public class Mario : MonoBehaviour
     {
         float runDistance = 0.35f;
         float runSpeed = MarioController.Instance.FreakoutBaseSpeed * 1.1f;
-        Mario mario = MarioController.Instance.mario;
+        Mario mario = MarioController.Instance.misterMario;
         Transform marioTransform = mario.gameObject.transform;
 
         for (float t = 0.0f; t < runDistance; t += Time.deltaTime)
@@ -303,7 +256,7 @@ public class Mario : MonoBehaviour
     {
         float runDistance = 0.2f;
         float runSpeed = MarioController.Instance.FreakoutBaseSpeed *1.1f;
-        Mario mario = MarioController.Instance.mario;
+        Mario mario = MarioController.Instance.misterMario;
         Transform marioTransform = mario.gameObject.transform;
 
         for (float t = 0.0f; t < runDistance; t += Time.deltaTime)
@@ -318,7 +271,7 @@ public class Mario : MonoBehaviour
     {
         float runDistance = 0.25f;
         float runSpeed = MarioController.Instance.FreakoutBaseSpeed * 1f;
-        Mario mario = MarioController.Instance.mario;
+        Mario mario = MarioController.Instance.misterMario;
         Transform marioTransform = mario.gameObject.transform;
 
         for (float t = 0.0f; t < runDistance; t += Time.deltaTime)
@@ -330,16 +283,11 @@ public class Mario : MonoBehaviour
         MarioDoneFreaking();
     }
     // --------------------------- SPINJUMP
-    bool startedJump = false;
-    public void MarioSpinJumps()
+
+    public void MarioSpinsAndJumps()
     {
-        if (startedJump == false)
-        {
-            startedJump = true;
-            isSpinJumping = true;
-            StartCoroutine(StartCoroutineAfterSeconds(SpinJump(), MarioController.Instance.PreSpinPauseTime));
-        }
-     
+        
+        StartCoroutine(StartCoroutineAfterSeconds(SpinJump(), MarioController.Instance.PreSpinPauseTime));
     }
     void MarioHasJumped()
     {
@@ -347,31 +295,28 @@ public class Mario : MonoBehaviour
     }
     void MarioHasSpinned()
     {
-        isSpinJumping = false;
-        UIController.Instance.leftWall.SetActive(true);
-
-        //       GameController.Instance.SetGameState(GameController.GameState.ClothesDropped);
+        GameController.Instance.SetGameState(GameController.GameState.ClothesDropped);
     }
     IEnumerator StartCoroutineAfterSeconds(IEnumerator routine, float seconds)
     {
-        for (float t = 0.0f; t < seconds; t += Time.deltaTime * 2)        
-            yield return null;        
+        for (float t = 0.0f; t < seconds; t += Time.deltaTime * 2)
+        {
+            yield return null;
+        }
         StartCoroutine(routine);
     }
     IEnumerator SpinJump()
     {
-        SoundControllerScript.PlaySound("jump");
-        float jumpHeight = 1.2f;
+        float jumpHeight = 0.8f;
         float jumpSpeed = 2f;
-        Mario mario = MarioController.Instance.mario;
+        Mario mario = MarioController.Instance.misterMario;
         Transform marioTransform = mario.gameObject.transform;
+       
 
         for (float t = 0.0f; t < jumpHeight; t += Time.deltaTime)
         {
-            if (t > jumpHeight / 3 && hatRemoved == false)
-                RemoveHat();
-            if (t > jumpHeight / 1.5 && bodyRemoved == false)
-                RemoveBody();
+            if (t > jumpHeight / 3 && feetRemoved == false)
+                RemoveFeet();
             flipCounter++;
             if (flipCounter > 3)
             {
@@ -380,9 +325,6 @@ public class Mario : MonoBehaviour
             }
        
             mario.skeletonSprite.GetComponent<SpriteRenderer>().flipX = flipped;
-            mario.headSprite.GetComponent<SpriteRenderer>().flipX = flipped;
-            mario.bodySprite.GetComponent<SpriteRenderer>().flipX = flipped;
-            mario.feetSprite.GetComponent<SpriteRenderer>().flipX = flipped;
             marioTransform.position += Vector3.up * jumpSpeed * Time.deltaTime;
             yield return null;
         }
@@ -392,12 +334,12 @@ public class Mario : MonoBehaviour
     {
         float jumpHeight = 0.3f;
         float jumpSpeed = 5f;
-        Mario mario = MarioController.Instance.mario;
+        Mario mario = MarioController.Instance.misterMario;
         Transform marioTransform = mario.gameObject.transform;
         for (float t = 0.0f; t < jumpHeight; t += Time.deltaTime)
         {
-            if (t > jumpHeight / 2 && feetRemoved == false)
-                RemoveFeet();
+            if (t > jumpHeight / 3 && hatRemoved == false)
+                RemoveBody();
             flipCounter++;
             if (flipCounter > 3)
             {
@@ -409,7 +351,8 @@ public class Mario : MonoBehaviour
             yield return null;
 
         }
-    
+        if (hatRemoved == false)
+             RemoveHat();
         MarioHasSpinned(); 
     }
     public void RemovePowerup()
@@ -418,7 +361,6 @@ public class Mario : MonoBehaviour
     }
     void RemoveHat()
     {
-        SoundControllerScript.PlaySound("jump"); 
         hatRemoved = true;
         StartCoroutine(FlyHat());
     }
@@ -428,8 +370,7 @@ public class Mario : MonoBehaviour
         StartCoroutine(FlyBody());
     }
     void RemoveFeet()
-    {
-        SoundControllerScript.PlaySound("jump");
+    { 
         feetRemoved = true;
         StartCoroutine(FlyFeet());
     }
@@ -449,7 +390,7 @@ public class Mario : MonoBehaviour
     }
     IEnumerator FlyHat()
     {
-        float runDistance = 46f;
+        float runDistance = 36f;
         float runSpeed = 2.1f; 
 
         for (float t = 0.0f; t < runDistance; t += Time.deltaTime)
@@ -462,20 +403,20 @@ public class Mario : MonoBehaviour
     }
     IEnumerator FlyBody()
     {
-        float runDistance =46f;
+        float runDistance =36f;
         float runSpeed = 1.9f;
 
         for (float t = 0.0f; t < runDistance; t += Time.deltaTime)
         {
             bodySprite.gameObject.transform.position += Vector3.right * runSpeed * Time.deltaTime;
-            bodySprite.gameObject.transform.position += Vector3.up * runSpeed *1.2f * Time.deltaTime;
+            bodySprite.gameObject.transform.position += Vector3.up * runSpeed * Time.deltaTime;
             yield return null;
         }
         bodySprite.gameObject.SetActive(false);
     }
     IEnumerator FlyFeet()
     {
-        float runDistance = 46f;
+        float runDistance = 36f;
         float runSpeed = 2.0f;
 
         for (float t = 0.0f; t < runDistance; t += Time.deltaTime)
