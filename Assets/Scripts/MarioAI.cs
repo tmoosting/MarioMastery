@@ -85,14 +85,13 @@ public class MarioAI : MonoBehaviour
         if (GameController.Instance.textFreeMode == true)
         { 
             ResetFrameCount();
-            yield return new WaitUntil(() => frame >= 40);
-
-            CallAction(MarioAction.LittleHop);
- 
+            yield return new WaitUntil(() => frame >= 40); 
+            CallAction(MarioAction.LittleHop); 
         }
-
+        CallAction(MarioAction.LittleHop);
+   
         ResetFrameCount();
-        yield return new WaitUntil(() => frame >= 100);
+        yield return new WaitUntil(() => frame >= 150);
 
         TextController.Instance.ClearText();
 

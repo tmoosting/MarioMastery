@@ -30,7 +30,7 @@ public class UIController : MonoBehaviour
     public GameObject selectionHolder;
     public GameObject proceedButton;
 
-    bool titleScreenUpdated = false;
+    bool firstPressPassed = false;
     bool buttonPressedI = false;
     bool buttonPressedL = false;
 
@@ -64,17 +64,17 @@ public class UIController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown("i") && titleScreenUpdated == false)
+        if (Input.GetKeyDown("i") && firstPressPassed == false)
         {
             buttonPressedI = true;
             UpdateTitleScreen();
         }
-        else if (Input.GetKeyDown("l") && titleScreenUpdated == false)
+        else if (Input.GetKeyDown("l") && firstPressPassed == false)
         {
             buttonPressedL = true;
             UpdateTitleScreen();
         }
-        if (titleScreenUpdated == true)
+        if (firstPressPassed == true)
         {
             if (buttonPressedI == true)
                 if (Input.GetKeyDown("l"))
@@ -99,7 +99,7 @@ public class UIController : MonoBehaviour
     public void UpdateTitleScreen()
     {
         textOrginal.gameObject.SetActive(false);
-        titleScreenUpdated = true;
+        firstPressPassed = true;
 
         if (buttonPressedI == true)        
             textL.gameObject.SetActive(true);        
