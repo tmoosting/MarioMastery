@@ -10,12 +10,12 @@ public class Mario : MonoBehaviour
     public enum BodyType { Body1, Body2, Body3, Body4  }
     public enum HandsType { Hands1, Hands2, Hands3, Hands4  }
     public enum FeetType { Feet1, Feet2, Feet3, Feet4  }
-
-    public Animation anim;
+     
 
     public SpriteRenderer headSprite;
     public SpriteRenderer bodySprite;
     public SpriteRenderer feetSprite;
+    public SpriteRenderer powerupSprite;
     public GameObject textHolder;
     public TextMeshProUGUI customText;
      
@@ -135,7 +135,7 @@ public class Mario : MonoBehaviour
     {
         float runDistance = 6f;
         float runSpeed =  0.7f;
-        Mario mario = MarioController.Instance.misterMario;
+        Mario mario = MarioController.Instance.mario;
         Transform marioTransform = mario.gameObject.transform;
 
         for (float t = 0.0f; t < runDistance; t += Time.deltaTime)
@@ -163,7 +163,7 @@ public class Mario : MonoBehaviour
     {
         float runDistance = 0.3f;
         float runSpeed = MarioController.Instance.FreakoutBaseSpeed * 2f;
-        Mario mario = MarioController.Instance.misterMario;
+        Mario mario = MarioController.Instance.mario;
         Transform marioTransform = mario.gameObject.transform;
 
       ClearText();
@@ -181,7 +181,7 @@ public class Mario : MonoBehaviour
     {
         float runDistance = 0.3f;
         float runSpeed = MarioController.Instance.FreakoutBaseSpeed *1.5f;
-        Mario mario = MarioController.Instance.misterMario;
+        Mario mario = MarioController.Instance.mario;
         Transform marioTransform = mario.gameObject.transform;
 
         for (float t = 0.0f; t < runDistance; t += Time.deltaTime)
@@ -196,7 +196,7 @@ public class Mario : MonoBehaviour
     {
         float runDistance = 0.25f;
         float runSpeed = MarioController.Instance.FreakoutBaseSpeed * 1.3f;
-        Mario mario = MarioController.Instance.misterMario;
+        Mario mario = MarioController.Instance.mario;
         Transform marioTransform = mario.gameObject.transform;
 
         for (float t = 0.0f; t < runDistance; t += Time.deltaTime)
@@ -211,7 +211,7 @@ public class Mario : MonoBehaviour
     {
         float runDistance = 0.25f;
         float runSpeed = MarioController.Instance.FreakoutBaseSpeed * 1.1f;
-        Mario mario = MarioController.Instance.misterMario;
+        Mario mario = MarioController.Instance.mario;
         Transform marioTransform = mario.gameObject.transform;
 
         for (float t = 0.0f; t < runDistance; t += Time.deltaTime)
@@ -226,7 +226,7 @@ public class Mario : MonoBehaviour
     {
         float runDistance = 0.25f;
         float runSpeed = MarioController.Instance.FreakoutBaseSpeed *1.2f;
-        Mario mario = MarioController.Instance.misterMario;
+        Mario mario = MarioController.Instance.mario;
         Transform marioTransform = mario.gameObject.transform;
 
         for (float t = 0.0f; t < runDistance; t += Time.deltaTime)
@@ -241,7 +241,7 @@ public class Mario : MonoBehaviour
     {
         float runDistance = 0.35f;
         float runSpeed = MarioController.Instance.FreakoutBaseSpeed * 1.1f;
-        Mario mario = MarioController.Instance.misterMario;
+        Mario mario = MarioController.Instance.mario;
         Transform marioTransform = mario.gameObject.transform;
 
         for (float t = 0.0f; t < runDistance; t += Time.deltaTime)
@@ -256,7 +256,7 @@ public class Mario : MonoBehaviour
     {
         float runDistance = 0.2f;
         float runSpeed = MarioController.Instance.FreakoutBaseSpeed *1.1f;
-        Mario mario = MarioController.Instance.misterMario;
+        Mario mario = MarioController.Instance.mario;
         Transform marioTransform = mario.gameObject.transform;
 
         for (float t = 0.0f; t < runDistance; t += Time.deltaTime)
@@ -271,7 +271,7 @@ public class Mario : MonoBehaviour
     {
         float runDistance = 0.25f;
         float runSpeed = MarioController.Instance.FreakoutBaseSpeed * 1f;
-        Mario mario = MarioController.Instance.misterMario;
+        Mario mario = MarioController.Instance.mario;
         Transform marioTransform = mario.gameObject.transform;
 
         for (float t = 0.0f; t < runDistance; t += Time.deltaTime)
@@ -309,7 +309,7 @@ public class Mario : MonoBehaviour
     {
         float jumpHeight = 0.8f;
         float jumpSpeed = 2f;
-        Mario mario = MarioController.Instance.misterMario;
+        Mario mario = MarioController.Instance.mario;
         Transform marioTransform = mario.gameObject.transform;
        
 
@@ -334,7 +334,7 @@ public class Mario : MonoBehaviour
     {
         float jumpHeight = 0.3f;
         float jumpSpeed = 5f;
-        Mario mario = MarioController.Instance.misterMario;
+        Mario mario = MarioController.Instance.mario;
         Transform marioTransform = mario.gameObject.transform;
         for (float t = 0.0f; t < jumpHeight; t += Time.deltaTime)
         {
